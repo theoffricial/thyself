@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@finance-hub/nx-serverless": ["packages/nx-serverless/src/index.ts"],
       "@finance-hub/test": ["packages/test/src/index.ts"]
     }
   },

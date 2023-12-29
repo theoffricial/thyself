@@ -14,9 +14,18 @@ importers:
       '@swc/helpers':
         specifier: ~0.5.2
         version: 0.5.3
+      chalk:
+        specifier: ^4.1.2
+        version: 4.1.2
+      prettyjson:
+        specifier: ^1.2.5
+        version: 1.2.5
       serverless:
         specifier: ^3.38.0
         version: 3.38.0
+      strip-ansi:
+        specifier: ^6.0.1
+        version: 6.0.1
       tslib:
         specifier: ^2.3.0
         version: 2.6.2
@@ -51,12 +60,18 @@ importers:
       '@swc/core':
         specifier: ~1.3.85
         version: 1.3.101(@swc/helpers@0.5.3)
+      '@types/aws-lambda':
+        specifier: ^8.10.130
+        version: 8.10.130
       '@types/jest':
         specifier: ^29.4.0
         version: 29.5.11
       '@types/node':
         specifier: 18.16.9
         version: 18.16.9
+      '@types/prettyjson':
+        specifier: ^0.0.33
+        version: 0.0.33
       '@types/serverless':
         specifier: ^3.12.20
         version: 3.12.20
@@ -84,6 +99,9 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.4.1
         version: 29.7.0
+      jest-environment-node:
+        specifier: ^29.4.1
+        version: 29.7.0
       nx:
         specifier: 17.2.7
         version: 17.2.7(@swc-node/register@1.6.8)(@swc/core@1.3.101)
@@ -96,6 +114,9 @@ importers:
       ts-node:
         specifier: 10.9.1
         version: 10.9.1(@swc/core@1.3.101)(@types/node@18.16.9)(typescript@5.2.2)
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
@@ -3854,6 +3875,10 @@ packages:
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
+  /@types/aws-lambda@8.10.130:
+    resolution: {integrity: sha512-HxTfLeGvD1wTJqIGwcBCpNmHKenja+We1e0cuzeIDFfbEj3ixnlTInyPR/81zAe0Ss/Ip12rFK6XNeMLVucOSg==}
+    dev: true
+
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
     dependencies:
@@ -3951,6 +3976,10 @@ packages:
 
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
+
+  /@types/prettyjson@0.0.33:
+    resolution: {integrity: sha512-hHZMkavT9OXFq8p6pTCiaREtPxMRfy9NMp+Qa4PWH0RINQjyh0crOhoqUFA/cvIZncpjBpdvxkoe7nmVbyBJXw==}
+    dev: true
 
   /@types/responselike@1.0.3:
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
@@ -4957,6 +4986,11 @@ packages:
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
+
+  /colors@1.4.0:
+    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
+    engines: {node: '>=0.1.90'}
+    dev: false
 
   /columnify@1.6.0:
     resolution: {integrity: sha512-lomjuFZKfM6MSAnV9aCZC9sc0qGbmZdfygNv+nCpqVkSKdCxCklLtd16O0EILGkImHw9ZpHkAnHaB+8Zxq5W6Q==}
@@ -7963,6 +7997,14 @@ packages:
       '@jest/schemas': 29.6.3
       ansi-styles: 5.2.0
       react-is: 18.2.0
+
+  /prettyjson@1.2.5:
+    resolution: {integrity: sha512-rksPWtoZb2ZpT5OVgtmy0KHVM+Dca3iVwWY9ifwhcexfjebtgjg3wmrUt9PvJ59XIYBcknQeYHD8IAnVlh9lAw==}
+    hasBin: true
+    dependencies:
+      colors: 1.4.0
+      minimist: 1.2.8
+    dev: false
 
   /proc-log@3.0.0:
     resolution: {integrity: sha512-++Vn7NS4Xf9NacaU9Xq3URUuqZETPsf8L4j5/ckhaRYsfPeRyzGw+iDjFhV/Jr3uNmTvvddEJFWh5R1gRgUH8A==}

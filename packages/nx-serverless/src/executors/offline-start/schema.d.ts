@@ -1,4 +1,4 @@
-export interface PrintExecutorSchema {
+export interface OfflineStartExecutorSchema {
     stage: string;
     region?: string;
     debug?: boolean;

@@ -18,11 +18,17 @@
       "description": "",
       "x-prompt": "What is the package about?"
     },
+    "scope": {
+      "type": "string",
+      "description": "",
+      "x-prompt": "What is your organization name?"
+    },
     "directory": {
       "type": "string",
       "description": "",
+      "default": "stacks",
       "$default": {
-        "value": "packages"
+        "value": "stacks"
       }
     }
   },

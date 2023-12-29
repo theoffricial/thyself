@@ -1,0 +1,34 @@
+
+> nx run service-test:print
+
+serverless print options
+------------------------
+cwd:        stacks/service-test
+stage:      dev
+region:     us-east-1
+awsProfile: default
+debug:      false
+verbose:    false
+colors:     false
+------------------------
+Running "serverless" from node_modules
+provider:
+  name: aws
+  stage: dev
+  region: us-east-1
+  versionFunctions: true
+service: service-test
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          method: get
+          path: hello
+    name: service-test-dev-hello
+
+ 
+
+ >  NX   Successfully ran target print for project service-test
+
+

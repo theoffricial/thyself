@@ -15,7 +15,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": ["serverless.base"],
             "depConstraints": [
               {
                 "sourceTag": "*",

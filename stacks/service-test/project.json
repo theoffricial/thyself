@@ -1,0 +1,59 @@
+{
+  "name": "service-test",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "stacks/service-test/src",
+  "targets": {
+    "print": {
+      "executor": "@finance-hub/nx-serverless:print",
+      "options": {
+        "cwd": "stacks/service-test"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "stacks/service-test",
+        "color": true,
+        "command": "serverless package"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "stacks/service-test",
+        "color": true,
+        "command": "serverless offline start"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "stacks/service-test",
+        "color": true,
+        "command": "serverless deploy"
+      }
+    },
+    "remove": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "stacks/service-test",
+        "color": true,
+        "command": "serverless remove"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["stacks/service-test/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "stacks/service-test/jest.config.ts"
+      }
+    }
+  }
+}

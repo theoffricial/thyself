@@ -21,6 +21,10 @@
     "region": {
       "type": "string",
       "default": "us-east-1"
+    },
+    "noColors": {
+      "type": "boolean",
+      "default": true
     }
   },
   "required": []

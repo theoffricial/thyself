@@ -1,4 +1,5 @@
 import {
+  addDependenciesToPackageJson,
   addProjectConfiguration,
   formatFiles,
   generateFiles,
@@ -18,7 +19,7 @@ export async function serviceGenerator(
   const resolvedOptions: ServiceGeneratorSchema = {
     ...options,
     description: options.description || '',
-    directory: options.directory || 'packages',
+    directory: options.directory || 'stacks',
     packageManager: options.packageManager || 'npm',
     name: names(options.name).fileName,
   };
@@ -26,20 +27,20 @@ export async function serviceGenerator(
 
   addProjectConfiguration(tree, resolvedOptions.name, {
     root: projectRoot,
-    projectType: 'library',
+    projectType: 'application',
     sourceRoot: `${projectRoot}/src`,
     targets: {
       build: {
-        ...buildRunCommandConfig(projectRoot, 'sls package'),
+        ...buildRunCommandConfig(projectRoot, 'serverless package'),
       },
       serve: {
-        ...buildRunCommandConfig(projectRoot, 'sls offline start'),
+        ...buildRunCommandConfig(projectRoot, 'serverless offline start'),
       },
       deploy: {
-        ...buildRunCommandConfig(projectRoot, 'sls deploy'),
+        ...buildRunCommandConfig(projectRoot, 'serverless deploy'),
       },
       remove: {
-        ...buildRunCommandConfig(projectRoot, 'sls remove'),
+        ...buildRunCommandConfig(projectRoot, 'serverless remove'),
       },
       lint: {
         executor: '@nx/linter:eslint',
@@ -49,17 +50,28 @@ export async function serviceGenerator(
       },
     },
   });
+
   generateFiles(
     tree,
     path.join(__dirname, 'files'),
     projectRoot,
     resolvedOptions
   );
+
   await addJest(tree, resolvedOptions.name);
   await formatFiles(tree);
 
+  const dependencies: Record<string, string> = {
+    "serverless": "^3.38.0",
+  };
+  const devDependencies: Record<string, string> = {
+    '@types/aws-lambda': '^8.10.72',
+  }
+
+  addDependenciesToPackageJson(tree, dependencies, devDependencies);
+
   return () => {
-    installPackagesTask(tree, true, '', resolvedOptions.packageManager);
+    installPackagesTask(tree, false, '.', resolvedOptions.packageManager);
   };
 }
 

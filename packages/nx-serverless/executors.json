@@ -9,6 +9,11 @@
       "implementation": "./src/executors/print/executor",
       "schema": "./src/executors/print/schema.json",
       "description": "print executor"
+    },
+    "offline-start": {
+      "implementation": "./src/executors/offline-start/executor",
+      "schema": "./src/executors/offline-start/schema.json",
+      "description": "offline-start executor"
     }
   }
 }

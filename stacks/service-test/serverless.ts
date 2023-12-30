@@ -5,8 +5,31 @@ const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfiguration,
   service: 'service-test',
   plugins: [
+    'serverless-esbuild',
     'serverless-offline',
   ],
+  custom: {
+    'serverless-offline': {
+      noTimeout: true,
+    },
+    esbuild: {
+      config: './esbuild.config.ts',
+      sourcemap: true, // --[[ ✅ enabled esbuild sourcemaps generation ]]
+      bundle: true,
+      target: 'node18',
+      platform: 'node',
+      keepOutputDirectory: false,
+      outputBuildFolder: '.build',
+      outputWorkFolder: '.esbuild',
+      packager: 'pnpm',
+      packagerOptions: {},
+      watch: {
+        pattern: ['src/**/*.ts'],
+        ignore: ['.esbuild', 'dist', 'node_modules', '.build'],
+        chokidar: { ignoreInitial: true },
+      }
+    }
+  },
   functions: {
     hello: {
       /** 

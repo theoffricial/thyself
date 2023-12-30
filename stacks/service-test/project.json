@@ -10,6 +10,12 @@
         "cwd": "stacks/service-test"
       }
     },
+    "start": {
+      "executor": "@finance-hub/nx-serverless:offline-start",
+      "options": {
+        "cwd": "stacks/service-test"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

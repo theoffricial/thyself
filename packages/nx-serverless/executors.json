@@ -14,6 +14,16 @@
       "implementation": "./src/executors/offline-start/executor",
       "schema": "./src/executors/offline-start/schema.json",
       "description": "offline-start executor"
+    },
+    "package": {
+      "implementation": "./src/executors/package/executor",
+      "schema": "./src/executors/package/schema.json",
+      "description": "package executor"
+    },
+    "deploy": {
+      "implementation": "./src/executors/deploy/executor",
+      "schema": "./src/executors/deploy/schema.json",
+      "description": "deploy executor"
     }
   }
 }

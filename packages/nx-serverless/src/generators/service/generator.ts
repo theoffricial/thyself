@@ -66,6 +66,8 @@ export async function serviceGenerator(
   };
   const devDependencies: Record<string, string> = {
     '@types/aws-lambda': '^8.10.72',
+    'serverless-offline': "^13.3.2",
+    'serverless-esbuild': '^1.50.1'
   }
 
   addDependenciesToPackageJson(tree, dependencies, devDependencies);

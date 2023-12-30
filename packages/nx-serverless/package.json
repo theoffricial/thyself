@@ -11,5 +11,8 @@
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "generators": "./generators.json",
-  "executors": "./executors.json"
+  "executors": "./executors.json",
+  "devDependencies": {
+    "@types/serverless": "^3.12.20"
+  }
 }

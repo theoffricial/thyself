@@ -4,6 +4,9 @@ import { baseServerlessConfiguration } from '../../serverless.base';
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfiguration,
   service: '<%= name %>',
+  plugins: [
+    'serverless-offline'
+  ],
   functions: {
     hello: {
       handler: 'src/handler.hello',

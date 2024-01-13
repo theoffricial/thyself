@@ -1,5 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "appsDir": "stacks",
+    "libsDir": "packages"
+  },
   "targetDefaults": {
     "build": {
       "cache": true,

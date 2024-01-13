@@ -8,10 +8,12 @@ export = (serverless: Serverless): BuildOptions => {
     target: 'node18',
     platform: 'node',
     format: 'cjs',
-    sourcemap: 'inline',
+    keepNames: true,
+    sourcemap: true,
     external: [],
     plugins: [],
     color: true,
-    treeShaking: true,
+    // treeShaking: true,
+    sourcesContent: false,
   };
 }

@@ -5,13 +5,30 @@
     "@nx/devkit": "^17.2.8",
     "@nx/jest": "^17.2.8",
     "nx": "^17.2.7",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "util": "0.12.5",
+    "prettyjson": "^1.2.5",
+    "serverless": "^3.38.0",
+    "strip-ansi": "^6.0.1",
+    "chalk": "^4.1.2"
   },
   "type": "commonjs",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "generators": "./generators.json",
   "executors": "./executors.json",
+  "peerDependency": {
+    "serverless": "^3.0.0",
+    "@types/serverless": "^3.12.20"
+  },
+  "peerDependenciesMeta": {
+    "serverless": {
+      "optional": false
+    },
+    "@types/serverless": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/serverless": "^3.12.20"
   }

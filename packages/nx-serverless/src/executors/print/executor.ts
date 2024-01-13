@@ -3,7 +3,7 @@ import { promisify } from 'util';
 import { PrintExecutorSchema } from './schema';
 import chalk from 'chalk';
 import stripAnsi from 'strip-ansi';
-import { ExecutorContext, logger, workspaceRoot
+import { ExecutorContext, logger, workspaceLayout, workspaceRoot
 } from '@nx/devkit';
 import { ExecException, exec } from 'child_process';
 import path from 'path';
@@ -13,16 +13,19 @@ const colorize = (chalkColorFn: chalk.Chalk, s: string, noColors: PrintExecutorS
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function runExecutor(options: PrintExecutorSchema, context: ExecutorContext) {
+  const {appsDir} = workspaceLayout();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  const { _, ...restOptions } = options as PrintExecutorSchema & { _: any };
+  const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
   
   const resolvedOptions: PrintExecutorSchema = {
-    ...options,
-    awsProfile: options.awsProfile || 'default',
+    ...restOptions,
+    ...restOptions,
     stage: options.stage || 'dev',
-    region: options.region || 'us-east-1',
-    debug: options.debug || false,
-    verbose: options.verbose || false,
-    cwd: options.cwd || workspaceRoot,
-    noColors: typeof options.noColors === 'boolean' ? options.noColors : true,
+    debug: restOptions.debug || false,
+    verbose: restOptions.verbose || false,
+    cwd: resolvedCwd,
+    serverlessConfigurationFileName: restOptions.serverlessConfigurationFileName,
   };
   logger.debug(
     'serverless print options\n' + 
@@ -34,7 +37,7 @@ export default async function runExecutor(options: PrintExecutorSchema, context:
   const { noColors } = resolvedOptions;
 
   const verboseArgs = resolvedOptions.verbose ? '--verbose' : '';
-  const debugArgs = resolvedOptions.debug ? '--debug' : '';
+  const debugArgs = resolvedOptions.debug ? 'SLS_DEBUG=* ' : '';
   const regionArgs = resolvedOptions.region ? `--region ${resolvedOptions.region}` : '';
   const awsProfileArgs = resolvedOptions.awsProfile
     ? `--aws-profile ${resolvedOptions.awsProfile}`
@@ -43,7 +46,7 @@ export default async function runExecutor(options: PrintExecutorSchema, context:
 
   const serviceDir = path.join(workspaceRoot, 'stacks', context.projectName); // Get service directory from options
 
-  const command = `serverless print ${stageArgs} ${regionArgs} ${awsProfileArgs} ${verboseArgs} ${debugArgs} --config ${path.join(serviceDir, 'serverless.ts')}`; // Add --config flag
+  const command = `${debugArgs}serverless print ${stageArgs} ${regionArgs} ${awsProfileArgs} ${verboseArgs} --config ${path.join(serviceDir, 'serverless.ts')}`; // Add --config flag
 
   logger.log(colorize(chalk.yellowBright, `cwd: ${serviceDir}`, noColors));
   logger.log(colorize(chalk.yellowBright, command, noColors));

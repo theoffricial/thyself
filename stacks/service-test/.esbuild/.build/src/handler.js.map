@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": ["../../../src/handler.ts"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAGO,IAAM,QAAgC,8BAAO,OAAO,aAAa;AACtE,QAAM,aAAa;AACnB,SAAO;AAAA,IACL;AAAA,IACA,MAAM,KAAK;AAAA,MACT;AAAA,QACE;AAAA,QACA,SACE;AAAA;AAAA,MAEJ;AAAA,MACA;AAAA,MACA;AAAA,IACF;AAAA,EACF;AACF,GAf6C;",
+  "names": []
+}

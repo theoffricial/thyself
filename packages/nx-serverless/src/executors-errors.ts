@@ -1,0 +1,1 @@
+export class ExecutorValidationError extends Error {}

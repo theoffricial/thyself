@@ -5,27 +5,28 @@
   "description": "",
   "type": "object",
   "properties": {
-    "stage": {
-      "type": "string",
-      "default": "dev"
+    "noColors": { "type": "boolean" },
+    "serverlessConfigurationFileName": { 
+      "type": "string", 
+      "enum": ["serverless.ts", "serverless.js", "serverless.yml", "serverless.json"] ,
+      "default": "serverless.ts"
     },
-    "awsProfile": {
-      "type": "string"
-    },
-    "verbose": {
-      "type": "boolean"
-    },
-    "debug": {
-      "type": "boolean"
-    },
-    "region": {
-      "type": "string",
-      "default": "us-east-1"
-    },
-    "noColors": {
-      "type": "boolean",
-      "default": true
-    }
+    "path": { "type": "string" },
+    "transform": { "type": "string" },
+    
+    "format": { "type": "string", "enum": ["json", "yaml", "text"] },
+    "region": { "type": "string" },
+    "awsProfile": { "type": "string" },
+    "app": { "type": "string" },
+    "org": { "type": "string" },
+    "useLocalCredentials": { "type": "boolean" },
+    "config": { "type": "string" },
+    "stage": { "type": "string" },
+    "param": { "type": "string" },
+    "help": { "type": "boolean" },
+    "version": { "type": "boolean" },
+    "verbose": { "type": "boolean" },
+    "debug": { "type": "boolean" }
   },
   "required": []
 }

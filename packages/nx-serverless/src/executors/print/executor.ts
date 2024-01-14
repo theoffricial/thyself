@@ -1,79 +1,26 @@
-// import { promisify } from 'util';
-import { promisify } from 'util';
 import { PrintExecutorSchema } from './schema';
-import chalk from 'chalk';
-import stripAnsi from 'strip-ansi';
-import { ExecutorContext, logger, workspaceLayout, workspaceRoot
+import { ExecutorContext, workspaceRoot
 } from '@nx/devkit';
-import { ExecException, exec } from 'child_process';
 import path from 'path';
-import prettyjson from 'prettyjson';
-
-const colorize = (chalkColorFn: chalk.Chalk, s: string, noColors: PrintExecutorSchema['noColors']) => noColors ? stripAnsi(s) : chalkColorFn(s);
+import { buildServerlessCommandArgs, executeCommandWithSpawn, getServerlessRuntime, printInputOptions, resolvedOptionsFn } from '../../executors-utils';
+import { buildPrintCustomFlags } from './custom-flags';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function runExecutor(options: PrintExecutorSchema, context: ExecutorContext) {
-  const {appsDir} = workspaceLayout();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  const { _, ...restOptions } = options as PrintExecutorSchema & { _: any };
-  const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
   
-  const resolvedOptions: PrintExecutorSchema = {
-    ...restOptions,
-    ...restOptions,
-    stage: options.stage || 'dev',
-    debug: restOptions.debug || false,
-    verbose: restOptions.verbose || false,
-    cwd: resolvedCwd,
-    serverlessConfigurationFileName: restOptions.serverlessConfigurationFileName,
-  };
-  logger.debug(
-    'serverless print options\n' + 
-    '------------------------\n' + 
-    `${prettyjson.render(resolvedOptions, {noColor: resolvedOptions.noColors, keysColor: 'blue', dashColor: 'magenta'})}\n` +
-    '------------------------\n'
-  );
+  const resolvedOptions = resolvedOptionsFn(options, context);
 
-  const { noColors } = resolvedOptions;
+  const serverlessConfig = await getServerlessRuntime(resolvedOptions);
 
-  const verboseArgs = resolvedOptions.verbose ? '--verbose' : '';
-  const debugArgs = resolvedOptions.debug ? 'SLS_DEBUG=* ' : '';
-  const regionArgs = resolvedOptions.region ? `--region ${resolvedOptions.region}` : '';
-  const awsProfileArgs = resolvedOptions.awsProfile
-    ? `--aws-profile ${resolvedOptions.awsProfile}`
-    : '';
-  const stageArgs = `--stage ${resolvedOptions.stage}`;
+  printInputOptions(serverlessConfig, resolvedOptions);
 
-  const serviceDir = path.join(workspaceRoot, 'stacks', context.projectName); // Get service directory from options
+  const customFlags: string[] = buildPrintCustomFlags(resolvedOptions);
+  const commandArgs: string[] = buildServerlessCommandArgs(['print'], resolvedOptions, customFlags);
 
-  const command = `${debugArgs}serverless print ${stageArgs} ${regionArgs} ${awsProfileArgs} ${verboseArgs} --config ${path.join(serviceDir, 'serverless.ts')}`; // Add --config flag
+  // Execute Command
 
-  logger.log(colorize(chalk.yellowBright, `cwd: ${serviceDir}`, noColors));
-  logger.log(colorize(chalk.yellowBright, command, noColors));
+  const absoluteServiceDir = path.join(workspaceRoot, resolvedOptions.cwd);
+  const success = await executeCommandWithSpawn(commandArgs, absoluteServiceDir, { noColors: resolvedOptions.noColors });
 
-  const whitelistStderr = ['Running "serverless" from node_modules', 'Waiting for the debugger to disconnect']
-  try {
-    const { stdout, stderr } = await promisify(exec)(
-      command,
-      { cwd: serviceDir } // Execute from workspace root
-    );
-
-    if (whitelistStderr.some(w => stderr.includes(w))) {
-      logger.info(colorize(chalk.blue, stderr, noColors));
-    } else if (stderr) {
-      // logger.error(chalk.redBright(stderr));
-      logger.error(colorize(chalk.redBright, stderr, noColors));
-      // logger.error(chalk.redBright(stdout));
-      logger.error(colorize(chalk.redBright,stdout,noColors));
-      return { success: false };
-    }
-
-    logger.log(colorize(chalk.greenBright,stdout, noColors));
-    return { success: true };
-  } catch (error) {
-    const execError = error as ExecException & { stdout: string, stderr: string };
-    logger.error(colorize(chalk.redBright, execError.message, noColors));
-    logger.error(colorize(chalk.redBright, execError.stdout, noColors));
-    return { success: false };
-  }
+  return { success };
 }

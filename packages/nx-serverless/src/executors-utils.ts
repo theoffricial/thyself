@@ -3,7 +3,7 @@ import type {BaseServerlessExecutorSchema} from './executors.shared-schema';
 import stripAnsi from 'strip-ansi';
 import { Serverless } from 'serverless/aws';
 import path from 'path';
-import { logger } from '@nx/devkit';
+import { ExecutorContext, logger, workspaceLayout, workspaceRoot } from '@nx/devkit';
 import prettyjson from 'prettyjson';
 import { ExecException, SpawnOptionsWithoutStdio, spawn } from 'child_process';
 import { promisify } from 'util';
@@ -107,4 +107,34 @@ export async function executeCommandWithSpawn<T extends BaseServerlessExecutorSc
         logger.error(colorize(chalk.redBright, execError.stdout, options.noColors));
         return false;
     }
+}
+
+export function resolvedOptionsFn<T extends BaseServerlessExecutorSchema, C extends ExecutorContext>(options: T, context: C) {
+    const { appsDir } = workspaceLayout();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    // const { _, ...restOptions } = options as T;
+    const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
+
+    const _resolvedOptions: Required<Pick<T, 'cwd'>> & Omit<T, 'cwd'> = {
+        ...options,
+        stage: options.stage || 'dev',
+        debug: options.debug || false,
+        verbose: options.verbose || false,
+        cwd: resolvedCwd,
+        serverlessConfigurationFileName: options.serverlessConfigurationFileName,
+    };
+
+    return _resolvedOptions;    
+}
+
+import parseServerlessConfig from 'serverless/lib/configuration/read';
+
+export async function getServerlessRuntime<T extends BaseServerlessExecutorSchema>(options: T) {
+    const absoluteServiceDir = path.join(workspaceRoot, options.cwd);
+  // const relativeConfigurationPath = path.join(resolvedCwd, resolvedOptions.serverlessConfigurationFileName);
+  const configurationPath = path.join(absoluteServiceDir, options.serverlessConfigurationFileName);
+  const serverlessConfig = (await parseServerlessConfig(configurationPath)) as Serverless;
+
+  return serverlessConfig;
 }

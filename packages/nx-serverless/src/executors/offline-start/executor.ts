@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ExecutorContext, logger, workspaceRoot, workspaceLayout } from '@nx/devkit';
+import { ExecutorContext, workspaceRoot } from '@nx/devkit';
 import { OfflineStartExecutorSchema } from './schema';
 import parseServerlessConfig from 'serverless/lib/configuration/read';
 import path from 'path';
 import { Serverless } from 'serverless/aws';;
-import { buildServerlessCommandArgs, printInputOptions, executeCommandWithSpawn } from '../../executors-utils';
+import { buildServerlessCommandArgs, printInputOptions, executeCommandWithSpawn, resolvedOptionsFn } from '../../executors-utils';
 import { buildOfflineStartCustomFlags } from './custom-flags';
+import { offlineStartValidations } from './validations';
 
 /**
  * Simulates API Gateway to call your lambda functions offline using backward compatible initialization
@@ -15,40 +16,37 @@ import { buildOfflineStartCustomFlags } from './custom-flags';
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function runExecutor(options: OfflineStartExecutorSchema, context: ExecutorContext): Promise<{ success: boolean; }> {
-  const {appsDir} = workspaceLayout();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { _, ...restOptions } = options as OfflineStartExecutorSchema & { _: any };
-  const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
   
-  const resolvedOptions: OfflineStartExecutorSchema = {
-    ...restOptions,
-    stage: options.stage || 'dev',
-    debug: restOptions.debug || false,
-    verbose: restOptions.verbose || false,
-    cwd: resolvedCwd,
-    serverlessConfigurationFileName: restOptions.serverlessConfigurationFileName,
-  };
+  const resolvedOptions = resolvedOptionsFn(options, context);
+
+  // Get Serverless
 
   // Get service directory from options
-  const absoluteServiceDir = path.join(workspaceRoot, resolvedCwd);
+  const absoluteServiceDir = path.join(workspaceRoot, resolvedOptions.cwd);
   // const relativeConfigurationPath = path.join(resolvedCwd, resolvedOptions.serverlessConfigurationFileName);
   const configurationPath = path.join(absoluteServiceDir, resolvedOptions.serverlessConfigurationFileName);
   const config = (await parseServerlessConfig(configurationPath)) as Serverless;
+  
+  // Print Input Summary
 
   printInputOptions(config, resolvedOptions);
   
-  if (!Array.isArray(config.plugins) || !config.plugins.includes('serverless-offline')) {
-    logger.error('nx-serverless:offline-start cannot be run when \'serverless-offline\' plugin is not installed and defined in serverless.ts');
-    return {
-      success: false,
-    }
-  }
+  // Validations (Unique per command)
+
+  offlineStartValidations(config, resolvedOptions);
+
+  // Get Custom Flags (Unique per command)
 
   const customFlags: string[] = buildOfflineStartCustomFlags(resolvedOptions);
+
+  // Build Command
+
   const commandArgs: string[] = buildServerlessCommandArgs(['offline', 'start'], resolvedOptions, customFlags);
 
+  // Execute Command
+
   const success = await executeCommandWithSpawn(commandArgs, absoluteServiceDir, { noColors: resolvedOptions.noColors });
+
   return { success };
 }
 

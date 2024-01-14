@@ -7,7 +7,7 @@ The complete orchestrator for using Serverless Framework (+v3) with Nx.
 **✅ Full support 🚧 Partial support 🗺️ In Roadmap ❌ No support**
 
 - ✅ `serverless offline start` (The Serverless offline plugin) 
-- ✅ `serverless print` 
+- ✅ `serverless print`
 - 🚧 `serverless package`
 
 ## Installation

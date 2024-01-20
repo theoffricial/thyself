@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "title": "DeployFunction executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "cwd": {
+      "type": "string",
+      "description": "Current working directory"
+  },
+  "no-colors": { 
+      "type": "boolean",
+      "description": "Turn off colors in CLI output",
+      "default": false
+  },
+  "serverless-file-ext": { 
+    "type": "string", 
+    "enum": [
+      "ts", 
+      "js", 
+      "yml", 
+      "json"
+    ],
+    "default": "serverless.ts",
+    "description": "Serverless configuration file name, Default: serverless.ts"
+  },
+  "region": { 
+      "type": "string",
+      "description": "region where the service should be deployed"
+  },
+  "aws-profile": { 
+      "type": "string",
+      "description": "AWS profile to use for deployment, Default: default"
+  },
+  "app": { 
+      "type": "string",
+      "description": "Serverless app name"
+  },
+  "org": { 
+      "type": "string",
+      "description": "Serverless organization name"
+  },
+  "use-local-credentials": { 
+      "type": "boolean",
+      "description": "Use local credentials instead of AWS_PROFILE"
+  },
+  "config": { 
+      "type": "string",
+      "description": "Path to serverless configuration file"
+  },
+  "stage": { 
+      "type": "string",
+      "description": "Stage to deploy to"
+  },
+  "param": { 
+      "type": "string",
+      "description": "Parameter to override in serverless configuration file"
+  },
+  "help": { 
+      "type": "boolean",
+      "description": "Shows this message and quits"
+  },
+  "version": { 
+      "type": "boolean",
+      "description": "Shows version information and quits"
+  },
+  "verbose": { 
+      "type": "boolean",
+      "description": "Shows verbose output"
+  },
+  "debug": { 
+      "type": "boolean",
+      "description": "Shows debug output"
+  },
+  "function": {
+      "type": "string",
+      "description": "Name of the function"
+    },
+    "force": {
+      "type": "boolean",
+      "description": "Forces a deployment to take place"
+    },
+    "update-config": {
+      "type": "boolean",
+      "description": "Pushes ONLY Lambda-level configuration changes e.g. handler, timeout or memorySize"
+    }
+  },
+  "required": ["function"]
+}

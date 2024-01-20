@@ -5,24 +5,24 @@ export interface BaseServerlessExecutorSchema {
   /** The relative path where the command is being executed */
   cwd?: string;
   /** When set to true, Strip ANSI characters, helpful for troubleshooting, Default: false */
-  noColors?: boolean;
+  'no-colors'?: boolean;
   /** Define what Serverless Framework Configuration file used, Default: serverless.ts */
-  serverlessConfigurationFileName?:
-    | 'serverless.ts'
-    | 'serverless.js'
-    | 'serverless.yml'
-    | 'serverless.json';
+  'serverless-file-ext'?:
+    | 'ts'
+    | 'js'
+    | 'yml'
+    | 'json';
 
   /** Region of the service */
   region?: string;
   /** AWS profile to use with the command */
-  awsProfile?: string;
+  'aws-profile'?: string;
   /** Dashboard app */
   app?: string;
   /** Dashboard org */
   org?: string;
   /** Rely on locally resolved AWS credentials instead of loading them from Serverless Framework Providers. This applies only to services signed into the Dashboard. */
-  useLocalCredentials?: boolean;
+  'use-local-credentials'?: boolean;
   /** Path to serverless config file */
   config?: string;
   /** Stage of the service */

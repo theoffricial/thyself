@@ -10,10 +10,10 @@ import { promisify } from 'util';
 
 export function getSharedServerlessOptionsArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {
     const regionArgs = resolvedOptions.region ? ['--region', resolvedOptions.region] : [];
-    const awsProfileArgs = resolvedOptions.awsProfile ? ['--aws-profile', resolvedOptions.awsProfile] : [];
+    const awsProfileArgs = resolvedOptions['aws-profile'] ? ['--aws-profile', resolvedOptions['aws-profile']] : [];
     const appArgs = resolvedOptions.app ? ['--app', resolvedOptions.app] : [];
     const orgArgs = resolvedOptions.org ? ['--org', resolvedOptions.org] : [];
-    const useLocalCredentialsArgs = resolvedOptions.useLocalCredentials ? ['--useLocalCredentials'] : [];
+    const useLocalCredentialsArgs = resolvedOptions['use-local-credentials'] ? ['--useLocalCredentials'] : [];
     // const configArgs = getServerlessConfigFilePathArgs(resolvedOptions);
     const stageArgs = ['--stage', resolvedOptions.stage];
     const paramArgs = resolvedOptions.param ? ['--param', resolvedOptions.param] : [];
@@ -38,11 +38,11 @@ export function getServerlessConfigFilePathArgs<T extends BaseServerlessExecutor
         '--config', 
         resolvedOptions.config 
         ? resolvedOptions.config 
-        : resolvedOptions.serverlessConfigurationFileName
+        : getServerlessFile(resolvedOptions['serverless-file-ext'])
     ];
 }
 
-export function colorize(colorFn: chalk.Chalk, str: string, noColors: BaseServerlessExecutorSchema['noColors']) { 
+export function colorize(colorFn: chalk.Chalk, str: string, noColors: BaseServerlessExecutorSchema['no-colors']) { 
     return noColors ? stripAnsi(str) : colorFn(str) 
 };
 
@@ -65,7 +65,7 @@ export function buildServerlessCommandArgs(subCommandArgs: string[], baseOptions
 
     logger.debug(
         'Executing:\n' +
-        `${prettyjson.render(commandArgs.join(' '), {noColor: baseOptions.noColors, keysColor: 'yellow', dashColor: 'yellow'})}\n` +
+        `${prettyjson.render(commandArgs.join(' '), {noColor: baseOptions['no-colors'], keysColor: 'yellow', dashColor: 'yellow'})}\n` +
         '------------------------\n'
     );
 
@@ -73,7 +73,7 @@ export function buildServerlessCommandArgs(subCommandArgs: string[], baseOptions
 }
 
 export function printInputOptions<T extends BaseServerlessExecutorSchema>(serverless: Serverless, options: T): void {
-    const relativeConfigurationPath = path.join(options.cwd, options.serverlessConfigurationFileName);
+    const relativeConfigurationPath = path.join(options.cwd, options['serverless-file-ext']);
     const serverlessStats = {
         ...options,
         service: serverless.service,
@@ -87,14 +87,14 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(server
         '------------------------\n' + 
         'serverless offline start options:\n' + 
         '------------------------\n' + 
-        `${prettyjson.render(serverlessStats, {noColor: options.noColors, keysColor: 'blue', dashColor: 'magenta'})}\n` +
+        `${prettyjson.render(serverlessStats, {noColor: options['no-colors'], keysColor: 'blue', dashColor: 'magenta'})}\n` +
         '------------------------\n'
       );
 
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function executeCommandWithSpawn<T extends BaseServerlessExecutorSchema>(serverlessCommandArgs: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: BaseServerlessExecutorSchema['noColors'] }) {
+export async function executeCommandWithSpawn<T extends BaseServerlessExecutorSchema>(serverlessCommandArgs: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: BaseServerlessExecutorSchema['no-colors'] }) {
     try {
         const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
         await promisify(spawn)(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: 'inherit', detached: true });
@@ -116,13 +116,23 @@ export function resolvedOptionsFn<T extends BaseServerlessExecutorSchema, C exte
     // const { _, ...restOptions } = options as T;
     const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
 
-    const _resolvedOptions: Required<Pick<T, 'cwd'>> & Omit<T, 'cwd'> = {
+    const _resolvedOptions: T & Required<BaseServerlessExecutorSchema> = {
         ...options,
+        "aws-profile": options['aws-profile'] || 'default',
+        config: options.config || '',
+        "use-local-credentials": options['use-local-credentials'] || false,
+        app: options.app || '',
+        org: options.org || '',
+        param: options.param || '',
+        region: options.region || '',
+        help: options.help || false,
+        version: options.version || false,
+        "no-colors": options['no-colors'] || false,
         stage: options.stage || 'dev',
         debug: options.debug || false,
         verbose: options.verbose || false,
         cwd: resolvedCwd,
-        serverlessConfigurationFileName: options.serverlessConfigurationFileName,
+        'serverless-file-ext': options['serverless-file-ext'] ?? 'ts',
     };
 
     return _resolvedOptions;    
@@ -132,9 +142,62 @@ import parseServerlessConfig from 'serverless/lib/configuration/read';
 
 export async function getServerlessRuntime<T extends BaseServerlessExecutorSchema>(options: T) {
     const absoluteServiceDir = path.join(workspaceRoot, options.cwd);
-  // const relativeConfigurationPath = path.join(resolvedCwd, resolvedOptions.serverlessConfigurationFileName);
-  const configurationPath = path.join(absoluteServiceDir, options.serverlessConfigurationFileName);
+  const serverlessFile = getServerlessFile(options['serverless-file-ext']);
+  const configurationPath = path.join(absoluteServiceDir, serverlessFile);
   const serverlessConfig = (await parseServerlessConfig(configurationPath)) as Serverless;
 
   return serverlessConfig;
+}
+
+export function getServerlessFile(ext: BaseServerlessExecutorSchema['serverless-file-ext']): 'serverless.ts' | 'serverless.js' | 'serverless.yml' | 'serverless.json' {
+    return `serverless.${ext}`;
+}
+
+export async function serverlessCommandRunner<ExecSchema extends BaseServerlessExecutorSchema>({
+    options,
+    context,
+    subCommandArgs,
+    customFlagsBuilder,
+    customValidations
+}: {
+    /** 
+     * The options passed to the executor
+     */
+    options: ExecSchema;
+    /**
+     * The context passed to the executor
+     */
+    context: ExecutorContext;
+    /**
+     * The sub command arguments to be passed to the serverless command
+     * @example ['offline', 'start']
+     */
+    subCommandArgs: string[];
+    /**
+     * A function that runs a set of custom validations to ensure the command can be executed
+     */
+    customValidations?: (options: ExecSchema, serverless: Serverless) => void;
+    /**
+     * A function that returns an array of custom flags to be passed to the serverless command
+     */
+    customFlagsBuilder?: (options: ExecSchema) => string[];
+
+}): Promise<{ success: boolean }> {
+    const resolvedOptions = resolvedOptionsFn(options, context);
+
+    const absoluteServiceDir = path.join(workspaceRoot, resolvedOptions.cwd);
+    const configurationPath = path.join(absoluteServiceDir, getServerlessFile(resolvedOptions['serverless-file-ext']));
+    const serverless = (await parseServerlessConfig(configurationPath)) as Serverless;
+
+    printInputOptions(serverless, resolvedOptions);
+
+    if (customValidations) {
+        customValidations(resolvedOptions, serverless);
+    }
+
+    const customFlags: string[] = customFlagsBuilder ? customFlagsBuilder(resolvedOptions) : [];
+    const commandArgs: string[] = buildServerlessCommandArgs(subCommandArgs, resolvedOptions, customFlags);
+    const success = await executeCommandWithSpawn(commandArgs, absoluteServiceDir, { noColors: resolvedOptions['no-colors'] });
+
+    return { success };
 }

@@ -6,7 +6,7 @@ export default async function runExecutor(options: DeployExecutorSchema, context
   const result = await serverlessCommandRunner({
     options,
     context,
-    subCommandArgs: ['offline', 'start'],
+    subCommandArgs: ['deploy'],
     customFlagsBuilder: (options: DeployExecutorSchema): string[] => {
       const flags: string[] = [];
       

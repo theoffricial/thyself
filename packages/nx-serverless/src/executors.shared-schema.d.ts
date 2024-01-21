@@ -1,7 +1,7 @@
 /**
  * Shared schema for all serverless CLI commands
  */
-export interface BaseServerlessExecutorSchema {
+export interface BaseServerlessExecutorSchema extends Record<string, unknown> {
   /** The relative path where the command is being executed */
   cwd?: string;
   /** When set to true, Strip ANSI characters, helpful for troubleshooting, Default: false */

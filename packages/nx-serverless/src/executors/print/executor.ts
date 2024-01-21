@@ -8,7 +8,7 @@ export default async function runExecutor(options: PrintExecutorSchema, context:
   const result = await serverlessCommandRunner({
     options,
     context,
-    subCommandArgs: ['offline', 'start'],
+    subCommandArgs: ['print'],
     customFlagsBuilder: (options: PrintExecutorSchema): string[] => {
       const flags: string[] = [];
       if (options.format) {

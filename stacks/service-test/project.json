@@ -16,6 +16,13 @@
         "cwd": "stacks/service-test"
       }
     },
+    "package": {
+      "executor": "@finance-hub/nx-serverless:package",
+      "options": {
+        "cwd": "stacks/service-test",
+        "stage": "abc"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

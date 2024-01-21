@@ -9,28 +9,38 @@ import { ExecException, SpawnOptionsWithoutStdio, spawn } from 'child_process';
 import { promisify } from 'util';
 
 export function getSharedServerlessOptionsArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {
-    const regionArgs = resolvedOptions.region ? ['--region', resolvedOptions.region] : [];
-    const awsProfileArgs = resolvedOptions['aws-profile'] ? ['--aws-profile', resolvedOptions['aws-profile']] : [];
-    const appArgs = resolvedOptions.app ? ['--app', resolvedOptions.app] : [];
-    const orgArgs = resolvedOptions.org ? ['--org', resolvedOptions.org] : [];
-    const useLocalCredentialsArgs = resolvedOptions['use-local-credentials'] ? ['--useLocalCredentials'] : [];
-    // const configArgs = getServerlessConfigFilePathArgs(resolvedOptions);
-    const stageArgs = ['--stage', resolvedOptions.stage];
-    const paramArgs = resolvedOptions.param ? ['--param', resolvedOptions.param] : [];
-    const verboseArgs = resolvedOptions.verbose ? ['--verbose'] : [];
-    const debugArgs = resolvedOptions.debug ? ['--debug', '*'] : [];
-    return [
-        ...regionArgs,
-        ...awsProfileArgs,
-        ...appArgs,
-        ...orgArgs,
-        ...useLocalCredentialsArgs,
-        // ...configArgs,
-        ...stageArgs,
-        ...paramArgs,
-        ...verboseArgs,
-        ...debugArgs,
-    ]
+    const flags: string[] = [];
+    if (resolvedOptions['region']) {
+        flags.push('--region', resolvedOptions['region']);
+    }
+    if (resolvedOptions['aws-profile']) {
+        flags.push('--aws-profile', resolvedOptions['aws-profile']);
+    }
+    if (resolvedOptions['app']) {
+        flags.push('--app', resolvedOptions['app']);
+    }
+    if (resolvedOptions['org']) {
+        flags.push('--org', resolvedOptions['org']);
+    }
+    if (resolvedOptions['use-local-credentials']) {
+        flags.push('--use-local-credentials');
+    }
+    if (resolvedOptions['config']) {
+        flags.push('--config', resolvedOptions['config']);
+    }
+    if (resolvedOptions['stage']) {
+        flags.push('--stage', resolvedOptions['stage']);
+    }
+    if (resolvedOptions['param']) {
+        flags.push('--param', resolvedOptions['param']);
+    }
+    if (resolvedOptions['verbose']) {
+        flags.push('--verbose');
+    }
+    if (resolvedOptions['debug']) {
+        flags.push('--debug', '*');
+    }
+    return flags
 }
 
 export function getServerlessConfigFilePathArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {
@@ -74,14 +84,14 @@ export function buildServerlessCommandArgs(subCommandArgs: string[], baseOptions
 
 export function printInputOptions<T extends BaseServerlessExecutorSchema>(serverless: Serverless, options: T): void {
     const relativeConfigurationPath = path.join(options.cwd, options['serverless-file-ext']);
-    const serverlessStats = {
+    const serverlessStats = cleanEmptyValues({
         ...options,
         service: serverless.service,
         layers: serverless.layers,
         frameworkVersion: serverless.frameworkVersion,
         config: relativeConfigurationPath,
         runtime: serverless.provider.runtime,
-      }
+      }, {cleanInPlace: true,nullCleaner: true, emptyStrings: true})
     
       logger.debug(
         '------------------------\n' + 
@@ -97,7 +107,7 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(server
 export async function executeCommandWithSpawn<T extends BaseServerlessExecutorSchema>(serverlessCommandArgs: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: BaseServerlessExecutorSchema['no-colors'] }) {
     try {
         const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
-        await promisify(spawn)(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: 'inherit', detached: true });
+        await promisify(spawn)(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: 'pipe' });
         logger.debug('The execution should never reach here....');
 
         return true;
@@ -116,7 +126,7 @@ export function resolvedOptionsFn<T extends BaseServerlessExecutorSchema, C exte
     // const { _, ...restOptions } = options as T;
     const resolvedCwd = options.cwd || (path.join(appsDir, context.projectName));
 
-    const _resolvedOptions: T & Required<BaseServerlessExecutorSchema> = {
+    const _resolvedOptions: T & BaseServerlessExecutorSchema = {
         ...options,
         "aws-profile": options['aws-profile'] || 'default',
         config: options.config || '',
@@ -139,6 +149,7 @@ export function resolvedOptionsFn<T extends BaseServerlessExecutorSchema, C exte
 }
 
 import parseServerlessConfig from 'serverless/lib/configuration/read';
+import { cleanEmptyValues } from 'clean-empty-values';
 
 export async function getServerlessRuntime<T extends BaseServerlessExecutorSchema>(options: T) {
     const absoluteServiceDir = path.join(workspaceRoot, options.cwd);

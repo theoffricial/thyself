@@ -1,0 +1,32 @@
+{
+  "name": "clean-empty-values",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/clean-empty-values/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/clean-empty-values",
+        "main": "packages/clean-empty-values/src/index.ts",
+        "tsConfig": "packages/clean-empty-values/tsconfig.lib.json",
+        "assets": ["packages/clean-empty-values/*.md"],
+        "generatePackageJson": true,
+        "format": ["cjs"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/clean-empty-values/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

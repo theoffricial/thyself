@@ -7,8 +7,7 @@ export default async function runExecutor(options: PackageExecutorSchema, contex
   const result = await serverlessCommandRunner({
     options,
     context,
-    subCommandArgs: ['offline', 'start'],
-    // customValidations: offlineStartValidations,
+    subCommandArgs: ['package'],
     customFlagsBuilder: (options: PackageExecutorSchema): string[] => {
       const flags = [];
     

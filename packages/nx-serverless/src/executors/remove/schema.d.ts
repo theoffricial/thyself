@@ -1,1 +1,3 @@
-export interface RemoveExecutorSchema {} // eslint-disable-line
+import { BaseServerlessExecutorSchema } from "../../executors.shared-schema";
+
+export interface RemoveExecutorSchema extends BaseServerlessExecutorSchema {}

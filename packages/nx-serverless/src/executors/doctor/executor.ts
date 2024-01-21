@@ -1,12 +1,12 @@
-import { ExecutorContext } from '@nx/devkit';
+import type { ExecutorContext } from '@nx/devkit';
+import type { DoctorExecutorSchema } from './schema';
 import { serverlessCommandRunner } from '../../executors-utils';
-import { DoctorExecutorSchema } from './schema';
 
 export default async function runExecutor(options: DoctorExecutorSchema, context: ExecutorContext) {
   const result = await serverlessCommandRunner({
     options,
     context,
-    subCommandArgs: ['doctor'],
+    subCommandArgs: ['invoke'],
   });
 
   return result;

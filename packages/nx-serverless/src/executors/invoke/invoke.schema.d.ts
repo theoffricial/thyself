@@ -89,9 +89,7 @@ export interface InvokeExecutor {
   /**
    * Input data
    */
-  data?: {
-    [k: string]: unknown;
-  };
+  data?: string;
   /**
    * Flag to pass input data as a raw string
    */

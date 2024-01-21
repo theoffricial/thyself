@@ -78,7 +78,7 @@
       "description": "Path to JSON or YAML file holding input data"
     },
     "data": {
-      "type": "object",
+      "type": "string",
       "description": "input data"
     },
     "raw": {
@@ -86,7 +86,7 @@
       "description": "Flag to pass input data as a raw string"
     },
     "context": {
-      "type": "object",
+      "type": "string",
       "description": "Context of the service"
     },
     "contextPath": {
@@ -94,7 +94,7 @@
       "description": "Path to JSON or YAML file holding context data"
     },
     "env": {
-      "type": "object",
+      "type": "string",
       "description": "Override environment variables. e.g. --env VAR1=val1 --env VAR2=val2"
     },
     "docker": {

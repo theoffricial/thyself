@@ -77,9 +77,7 @@ export interface InvokeLocalExecutor {
   /**
    * input data
    */
-  data?: {
-    [k: string]: unknown;
-  };
+  data?: string;
   /**
    * Flag to pass input data as a raw string
    */
@@ -87,9 +85,7 @@ export interface InvokeLocalExecutor {
   /**
    * Context of the service
    */
-  context?: {
-    [k: string]: unknown;
-  };
+  context?: string;
   /**
    * Path to JSON or YAML file holding context data
    */
@@ -97,9 +93,7 @@ export interface InvokeLocalExecutor {
   /**
    * Override environment variables. e.g. --env VAR1=val1 --env VAR2=val2
    */
-  env?: {
-    [k: string]: unknown;
-  };
+  env?: string;
   /**
    * Flag to turn on docker use for node/python/ruby/java
    */

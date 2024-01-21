@@ -6,7 +6,7 @@ export default async function runExecutor(options: DoctorExecutorSchema, context
   const result = await serverlessCommandRunner({
     options,
     context,
-    subCommandArgs: ['invoke'],
+    subCommandArgs: ['doctor'],
   });
 
   return result;

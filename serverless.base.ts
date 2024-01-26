@@ -1,6 +1,6 @@
 import { Serverless } from 'serverless/aws';
 
-export const baseServerlessConfiguration: Partial<Serverless> = {
+export default {
     frameworkVersion: '^3.38.0',
     provider: {
         name: 'aws',
@@ -8,6 +8,5 @@ export const baseServerlessConfiguration: Partial<Serverless> = {
         environment: {
             NODE_OPTIONS: "--enable-source-maps" // --[[ ✅ enabled lambda sourcemaps support ]]
         }
-    },
-    
-}
+    },   
+} as Partial<Serverless>;

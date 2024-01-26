@@ -38,12 +38,13 @@ export function buildServerlessCommandArgs(serverlessArgs: string[], baseOptions
   }
 
   export function printServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema) {
-    const printMessage = 
+    const printMessage =
+        '\nServerless command:\n' +
+        '------------------------\n';
         prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors']}) + 
-        '\n------------------------\n';
-    //, keysColor: 'yellow', dashColor: 'yellow'})}\n` +
+        '\n------------------------';
 
-    logger.verbose(printMessage);
+    logger.debug(printMessage);
   }
 
   export function getSharedServerlessOptionsArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {

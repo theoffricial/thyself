@@ -3,7 +3,7 @@ import stripAnsi from 'strip-ansi';
 import { logger as nrwlLogger } from '@nx/devkit';
 import { format } from 'date-fns/format';
 
-export type LogSeverity = 'log' | 'error' | 'warn' | 'debug' | 'verbose';
+export type LogSeverity =  'debug' | 'verbose' | 'log' | 'info' | 'warn' | 'error' | 'fatal';
 export interface LoggerOptions {
   /**
    * Whether to include colors in the log message, colors are in ANSI format, uses `chalk` and `strip-ansi`.
@@ -31,31 +31,39 @@ export interface LoggerOptions {
 }
 
 export interface LoggerContract {
-    /**
-     * Log (info): General operational information about what's happening inside the application.
-     * This is usually the default logging level.
-     */
-    info(message: string): void;
-    /**
-     * Warn: When something unexpected happens, but the application still works as expected,
-     * it's a good idea to log this event as a warning.
-     */
-    warn(message: string): void;
-    /**
-     * Error: When an operation fails, an error log gives insight into the event.
-     * It includes things like stack traces or exception messages.
-     */
-    error(message: string): void;
-    /**
-     * Debug: Contains information that is helpful for debugging during development and troubleshooting.
-     * It's usually only meaningful to developers and often high-volume.
-     */
-    debug(message: string): void;
-    /**
-     * Verbose: Verbose logging includes detailed information about the application's behavior.
-     * It's usually only meaningful for in-depth troubleshooting.
-     */
-    verbose(message: string): void;
+  /**
+   * Info: This is used for regular, non-error information that you want to capture in your logs. 
+   * It could be things like the start and end of a process, or a status update.
+   */
+  info(message: string): void;
+  /**
+   * Log: General-purpose logging method that can handle messages of any severity level.
+   */
+  log(message: string): void;
+  /**
+   * Warn: When something unexpected happens, but the application still works as expected,
+   * it's a good idea to log this event as a warning.
+   */
+  warn(message: string): void;
+  /**
+   * Error: When an operation fails, an error log gives insight into the event.
+   * It includes things like stack traces or exception messages.
+   */
+  error(message: string): void;
+  /**
+   * Fatal: Very severe error events that will presumably lead the application to abort.
+   */
+  fatal(message: string): void;
+  /**
+   * Debug: Contains information that is helpful for debugging during development and troubleshooting.
+   * It's usually only meaningful to developers and often high-volume.
+   */
+  debug(message: string): void;
+  /**
+   * Verbose: Verbose logging includes detailed information about the application's behavior.
+   * It's usually only meaningful for in-depth troubleshooting.
+   */
+  verbose(message: string): void;
 }
 
 class DefaultLogger implements LoggerContract {
@@ -81,8 +89,14 @@ class DefaultLogger implements LoggerContract {
       timeFormat: options.timeFormat ?? this.defaultOptions.timeFormat,
     };
   }
-  info(message: string) {
+  log(message: string): void {
     this._logger.info(this.buildLogString(message, 'log', this._loggerOptions));
+  }
+  fatal(message: string): void {
+    this._logger.info(this.buildLogString(message, 'fatal', this._loggerOptions));
+  }
+  info(message: string) {
+    this._logger.info(this.buildLogString(message, 'info', this._loggerOptions));
   }
 
   warn(message: string) {
@@ -130,18 +144,26 @@ class DefaultLogger implements LoggerContract {
    * Verbose: Verbose logging includes detailed information about the application's behavior.
    * It's usually only meaningful for in-depth troubleshooting.
    * --------------------------
+   * Info: This is used for regular, non-error information that you want to capture in your logs. 
+   * It could be things like the start and end of a process, or a status update.
+   * --------------------------
    * Warn: When something unexpected happens, but the application still works as expected,
    * it's a good idea to log this event as a warning.
    * --------------------------
    * Error: When an operation fails, an error log gives insight into the event.
    * It includes things like stack traces or exception messages.
+   * --------------------------
+   * Fatal: Very severe error events that will presumably lead the application to abort.
+   * --------------------------
    */
   private log_severity_map = new Map<LogSeverity, chalk.Chalk>([
-    ['log', chalk.cyan],
-    ['error', chalk.red],
-    ['warn', chalk.yellow],
+    ['log', chalk.gray],
     ['debug', chalk.green],
     ['verbose', chalk.magenta],
+    ['info', chalk.blue],
+    ['warn', chalk.yellow],
+    ['error', chalk.redBright],
+    ['fatal', chalk.red],
   ]);
 
   private getInitials(
@@ -165,6 +187,14 @@ class DefaultLogger implements LoggerContract {
 }
 
 class PredefinedLogger implements LoggerContract {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    log(message: string): void {
+      throw new Error(this.loggerInitNotCalled);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    fatal(message: string): void {
+      throw new Error(this.loggerInitNotCalled);
+    }
     private loggerInitNotCalled = `You must call "${loggerInit.name}" before using the logger methods. Example: \nimport { loggerInit } from '@nx-tools/nx-serverless';\n loggerInit();`;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     info(message: string): void {

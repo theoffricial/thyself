@@ -1,10 +1,11 @@
 import type { Serverless } from 'serverless/aws';
-import { baseServerlessConfiguration } from '../../serverless.base';
+import baseServerlessConfig from '../../serverless.base';
 
 const serverlessConfiguration = <Serverless>{
-  ...baseServerlessConfiguration,
+  ...baseServerlessConfig,
   service: '<%= name %>',
   plugins: [
+    'serverless-esbuild',
     'serverless-offline'
   ],
   functions: {

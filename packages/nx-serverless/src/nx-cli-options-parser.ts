@@ -47,7 +47,7 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(server
       }, {cleanInPlace: true,nullCleaner: true, emptyStrings: true})
     
       const message =
-      'NX resolved options:\n' + 
+      '\nNX resolved options:\n' + 
       '------------------------\n' + 
       `${prettyjson.render(serverlessStats, {noColor: options['no-colors'] })}\n` +//, keysColor: 'blue', dashColor: 'magenta'})}\n` +
       '------------------------\n'

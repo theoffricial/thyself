@@ -1,5 +1,5 @@
 import type { Serverless } from 'serverless/aws';
-import { baseServerlessConfiguration } from '../../serverless.base';
+import baseServerlessConfiguration from '../../serverless.base';
 import type {WatchOptions } from 'chokidar';
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfiguration,

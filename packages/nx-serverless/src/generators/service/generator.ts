@@ -9,9 +9,9 @@ import {
 } from '@nx/devkit';
 import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
-import { buildRunCommandConfig } from './workspace-config';
 import { addJest } from './jest-config';
 
+// gprh - Growth, Productivity, Reliability, High-performance
 export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
@@ -31,21 +31,44 @@ export async function serviceGenerator(
     sourceRoot: `${projectRoot}/src`,
     targets: {
       build: {
-        ...buildRunCommandConfig(projectRoot, 'serverless package'),
+        executor: '@gprh/nx-serverless:package',
+        options: {
+          cwd: projectRoot,
+          stage: 'dev',
+        },
+        // ...buildRunCommandConfig(projectRoot, 'serverless package'),
       },
-      serve: {
-        ...buildRunCommandConfig(projectRoot, 'serverless offline start'),
+      start: {
+        executor: '@gprh/nx-serverless:offline-start',
+        options: {
+          cwd: projectRoot,
+          stage: 'dev',
+        },
       },
       deploy: {
-        ...buildRunCommandConfig(projectRoot, 'serverless deploy'),
+        executor: '@gprh/nx-serverless:deploy',
+        options: {
+          cwd: projectRoot,
+          stage: 'dev',
+        },
       },
       remove: {
-        ...buildRunCommandConfig(projectRoot, 'serverless remove'),
+        executor: '@gprh/nx-serverless:remove',
+        options: {
+          cwd: projectRoot,
+          stage: 'dev',
+        },
       },
       lint: {
         executor: '@nx/linter:eslint',
         options: {
           lintFilePatterns: [projectRoot + '/**/*.ts'],
+        },
+      },
+      test: {
+        executor: '@nx/jest:jest',
+        options: {
+          jestConfig: [projectRoot + 'jest.config.ts'],
         },
       },
     },

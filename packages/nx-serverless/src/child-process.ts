@@ -20,8 +20,15 @@ export async function childProcessExecution(args: string[], absoluteDirectoryPat
                 logger.info(output);
             });
             childProcess.stderr.on('data', (data) => {
-                const output = data.toString();
-                logger.error(output);
+                const output: string = data.toString();
+                const sanitizedOutput = output.trim();
+                if (sanitizedOutput === '') {
+                    return;
+                } else if (sanitizedOutput || ['Debugger attached.', 'Running "serverless" from node_modules'].some(knownString => sanitizedOutput.includes(knownString))) {
+                    logger.debug(sanitizedOutput);
+                } else {
+                    logger.error(sanitizedOutput);
+                }
             });
 
             childProcess.on('exit', (code: ExitCodeType, signal: NodeJS.Signals) => {

@@ -7,7 +7,7 @@
     },
     "print": {
       "implementation": "./src/executors/print/executor",
-      "schema": "./src/executors/print/schema.json",
+      "schema": "./src/executors/print/print.schema.json",
       "description": "print executor"
     },
     "offline-start": {

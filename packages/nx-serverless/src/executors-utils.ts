@@ -6,7 +6,7 @@ import path from 'path';
 import { ExecutorContext, logger, workspaceLayout, workspaceRoot } from '@nx/devkit';
 import prettyjson from 'prettyjson';
 import { ExecException, SpawnOptionsWithoutStdio, spawn } from 'child_process';
-import { promisify } from 'util';
+import {ExitCodeType, exitCodeMap} from './executors.constants';
 
 export function getSharedServerlessOptionsArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {
     const flags: string[] = [];
@@ -105,18 +105,46 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(server
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function executeCommandWithSpawn<T extends BaseServerlessExecutorSchema>(serverlessCommandArgs: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: BaseServerlessExecutorSchema['no-colors'] }) {
-    try {
-        const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
-        await promisify(spawn)(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: 'pipe' });
-        logger.debug('The execution should never reach here....');
+    // try {
+        // const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
 
-        return true;
-    } catch (error) {
-        const execError = error as ExecException & { stdout: string, stderr: string };
-        logger.error(colorize(chalk.redBright, execError.message, options.noColors));
-        logger.error(colorize(chalk.redBright, execError.stdout, options.noColors));
-        return false;
-    }
+        return new Promise<string>((resolve, reject) => {
+
+            try {
+                const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
+    
+                const childProcess = spawn(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: ['pipe', 'pipe', process.stderr] });
+
+                childProcess.stdout.on('data', (data) => {
+                    const output = data.toString();
+                    console.log(output);
+                });
+                childProcess.stdin.on('data', (data) => {
+                    const output = data.toString();
+                    console.log(output);
+                });
+
+                childProcess.on('exit', (code: ExitCodeType, signal: NodeJS.Signals) => {
+                    if (code !== null) {
+                        if (code === 0) {
+                            logger.debug(exitCodeMap.get(code).shortenUserFriendly);
+                            resolve(exitCodeMap.get(code).shortenUserFriendly);
+                        } else {
+                            logger.debug(`Child process exited with error code ${code}`);
+                            resolve(exitCodeMap.get(code).shortenUserFriendly);
+                        }
+                    } else if (signal !== null) {
+                        logger.debug(`Child process was killed with signal ${signal}`);
+                        resolve(`The process was killed intentionally with signal ${signal}`);
+                    }
+                });
+            } catch (error) {
+                const execError = error as ExecException & { stdout: string, stderr: string };
+                logger.error(colorize(chalk.redBright, execError.message, options.noColors));
+                logger.error(colorize(chalk.redBright, execError.stdout, options.noColors));
+                reject(new Error(`The process killed due to error ${execError.message}`));
+            }
+        });
 }
 
 export function resolvedOptionsFn<T extends BaseServerlessExecutorSchema, C extends ExecutorContext>(options: T, context: C) {
@@ -208,7 +236,7 @@ export async function serverlessCommandRunner<ExecSchema extends BaseServerlessE
 
     const customFlags: string[] = customFlagsBuilder ? customFlagsBuilder(resolvedOptions) : [];
     const commandArgs: string[] = buildServerlessCommandArgs(subCommandArgs, resolvedOptions, customFlags);
-    const success = await executeCommandWithSpawn(commandArgs, absoluteServiceDir, { noColors: resolvedOptions['no-colors'] });
+    const spawnResult = await executeCommandWithSpawn(commandArgs, absoluteServiceDir, { noColors: resolvedOptions['no-colors'] });
 
-    return { success };
+    return { success: !spawnResult.includes('error') };
 }

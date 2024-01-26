@@ -21,7 +21,7 @@ export interface LoggerOptions {
    * @example [INFO 2021-08-01 12:00:00.000]
    * @default true
    */
-  includeTimestamp?: boolean;
+  useTimestamp?: boolean;
   /**
    * The format of the timestamp, depends if `includeTimestamp` is true and `useInitials` is true.
    * @example 'yyyy-MM-dd HH:mm:ss.SSS'
@@ -64,7 +64,7 @@ class DefaultLogger implements LoggerContract {
   private defaultOptions: Required<LoggerOptions> = {
     noColors: false,
     useInitials: true,
-    includeTimestamp: true,
+    useTimestamp: true,
     timeFormat: 'yyyy-MM-dd HH:mm:ss.SSS',
   };
   constructor(options: LoggerOptions = {}) {
@@ -74,10 +74,10 @@ class DefaultLogger implements LoggerContract {
         typeof options.noColors === 'boolean' ? options.noColors : this.defaultOptions.noColors,
       useInitials:
         typeof options.useInitials === 'boolean' ? options.useInitials : this.defaultOptions.useInitials,
-      includeTimestamp:
-        typeof options.includeTimestamp === 'boolean'
-          ? options.includeTimestamp
-          : this.defaultOptions.includeTimestamp,
+      useTimestamp:
+        typeof options.useTimestamp === 'boolean'
+          ? options.useTimestamp
+          : this.defaultOptions.useTimestamp,
       timeFormat: options.timeFormat ?? this.defaultOptions.timeFormat,
     };
   }
@@ -146,13 +146,9 @@ class DefaultLogger implements LoggerContract {
 
   private getInitials(
     level: LogSeverity,
-    options: { timestamp?: boolean; timeFormat?: 'yyyy-MM-dd HH:mm:ss.SSS' } = {
-      timeFormat: 'yyyy-MM-dd HH:mm:ss.SSS',
-      timestamp: true,
-    }
-  ) {
+    options: LoggerOptions) {
     return `[${level.toUpperCase()}${
-      options.timestamp ? ` ${this.getFormattedNowDate()}]` : ']'
+      options.useTimestamp ? ` ${this.getFormattedNowDate()}]` : ']'
     }`;
   }
   private getFormattedNowDate() {

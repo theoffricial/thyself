@@ -1,13 +1,13 @@
 import { ExecException, SpawnOptionsWithoutStdio, spawn } from "child_process";
 import { logger } from "./logger";
-import { ExitCodeType, exitCodeMap } from "./executors.constants";
+import { ExitCodeType, exitCodeMap } from "./child-process.constants";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function childProcessExecution(serverlessCommandArgs: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: boolean }) {
+export async function childProcessExecution(args: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: boolean }) {
     return new Promise<string>((resolve, reject) => {
 
         try {
-            const [serverlessCli, ...restOfArgs] = serverlessCommandArgs;
+            const [serverlessCli, ...restOfArgs] = args;
 
             const childProcess = spawn(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: ['pipe', 'pipe', 'pipe'] });
 
@@ -27,11 +27,11 @@ export async function childProcessExecution(serverlessCommandArgs: string[], abs
             childProcess.on('exit', (code: ExitCodeType, signal: NodeJS.Signals) => {
                 if (code !== null) {
                     if (code === 0) {
-                        logger.debug(exitCodeMap.get(code).shortenUserFriendly);
-                        resolve(exitCodeMap.get(code).shortenUserFriendly);
+                        logger.debug(exitCodeMap.get(code).shortenUserFriendlyMessage);
+                        resolve(exitCodeMap.get(code).shortenUserFriendlyMessage);
                     } else {
                         logger.debug(`Child process exited with error code ${code}`);
-                        resolve(exitCodeMap.get(code).shortenUserFriendly);
+                        resolve(exitCodeMap.get(code).shortenUserFriendlyMessage);
                     }
                 } else if (signal !== null) {
                     logger.debug(`Child process was killed with signal ${signal}`);

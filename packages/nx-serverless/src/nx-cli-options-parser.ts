@@ -46,10 +46,10 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(server
         runtime: serverless.provider.runtime,
       }, {cleanInPlace: true,nullCleaner: true, emptyStrings: true})
     
-      const message = '------------------------\n' + 
-      'serverless offline start options:\n' + 
+      const message =
+      'NX resolved options:\n' + 
       '------------------------\n' + 
-      `${prettyjson.render(serverlessStats, {noColor: options['no-colors'], keysColor: 'blue', dashColor: 'magenta'})}\n` +
+      `${prettyjson.render(serverlessStats, {noColor: options['no-colors'] })}\n` +//, keysColor: 'blue', dashColor: 'magenta'})}\n` +
       '------------------------\n'
       logger.debug(message);
 

@@ -15,11 +15,11 @@ export function getServerlessConfigFilePathArgs<T extends BaseServerlessExecutor
     ];
 }
 
-export function buildServerlessCommandArgs(subCommandArgs: string[], baseOptions: BaseServerlessExecutorSchema, customFlags: string[]) {
+export function buildServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema, customFlags: string[]) {
     const configArgs = getServerlessConfigFilePathArgs(baseOptions);
       const commandArgs: string[] = [
           'serverless',
-          ...subCommandArgs,
+          ...serverlessArgs,
           ...configArgs,
       ];
   
@@ -32,11 +32,18 @@ export function buildServerlessCommandArgs(subCommandArgs: string[], baseOptions
           commandArgs.push(...getSharedServerlessOptionsArgs(baseOptions))
       }
   
-      const printMessage = 'Executing:\n' +
-      `${prettyjson.render(commandArgs.join(' '), {noColor: baseOptions['no-colors'], keysColor: 'yellow', dashColor: 'yellow'})}\n` +
-      '------------------------\n';
-      logger.debug(printMessage);
+      printServerlessCommandArgs(commandArgs, baseOptions);
+
       return commandArgs;
+  }
+
+  export function printServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema) {
+    const printMessage = 
+        prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors']}) + 
+        '\n------------------------\n';
+    //, keysColor: 'yellow', dashColor: 'yellow'})}\n` +
+
+    logger.verbose(printMessage);
   }
 
   export function getSharedServerlessOptionsArgs<T extends BaseServerlessExecutorSchema>(resolvedOptions: T): string[] {

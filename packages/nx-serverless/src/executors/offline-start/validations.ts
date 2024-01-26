@@ -1,7 +1,7 @@
 import { Serverless } from "serverless/aws";
 import { OfflineStartExecutorSchema } from "./schema";
 import { logger } from "@nx/devkit";
-import { ExecutorValidationError } from "../../executors-errors";
+import { ExecutorValidationError } from "../../run-serverless.errors";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function offlineStartValidations(options: OfflineStartExecutorSchema, serverless: Serverless) { 

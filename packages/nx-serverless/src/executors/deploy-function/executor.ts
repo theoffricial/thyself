@@ -1,12 +1,12 @@
 import { ExecutorContext } from '@nx/devkit';
 import { DeployFunctionExecutorSchema } from './schema';
-import { serverlessCommandRunner } from '../../executors-utils';
+import { runServerless } from '../../run-serverless';
 
 export default async function runExecutor(
   options: DeployFunctionExecutorSchema,
   context: ExecutorContext
 ) {
-  const result = await serverlessCommandRunner({
+  const result = await runServerless({
     options,
     context,
     subCommandArgs: ['deploy', 'function'],

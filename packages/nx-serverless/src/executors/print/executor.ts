@@ -1,11 +1,11 @@
 import { PrintExecutorSchema } from './schema';
-import { serverlessCommandRunner } from '../../executors-utils';
+import { runServerless } from '../../run-serverless';
 import { ExecutorContext } from '@nx/devkit';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function runExecutor(options: PrintExecutorSchema, context: ExecutorContext) {
   
-  const result = await serverlessCommandRunner({
+  const result = await runServerless({
     options,
     context,
     subCommandArgs: ['print'],

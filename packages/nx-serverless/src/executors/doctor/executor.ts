@@ -1,9 +1,9 @@
 import type { ExecutorContext } from '@nx/devkit';
 import type { DoctorExecutorSchema } from './schema';
-import { serverlessCommandRunner } from '../../executors-utils';
+import { runServerless } from '../../run-serverless';
 
 export default async function runExecutor(options: DoctorExecutorSchema, context: ExecutorContext) {
-  const result = await serverlessCommandRunner({
+  const result = await runServerless({
     options,
     context,
     subCommandArgs: ['doctor'],

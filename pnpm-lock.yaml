@@ -96,6 +96,9 @@ importers:
       chokidar:
         specifier: ^3.5.3
         version: 3.5.3
+      date-fns:
+        specifier: ^3.3.1
+        version: 3.3.1
       esbuild:
         specifier: ^0.19.11
         version: 0.19.11
@@ -5993,6 +5996,10 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
+    dev: true
+
+  /date-fns@3.3.1:
+    resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
     dev: true
 
   /dayjs@1.11.10:

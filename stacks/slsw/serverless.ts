@@ -1,7 +1,16 @@
 import type { Serverless } from 'serverless/aws';
+import {} from '@nx/devkit';
 import baseServerlessConfiguration from '../../serverless.base';
 
-const serverlessConfiguration = <Serverless>{
+type OriginalOrStringInterpolation<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? OriginalOrStringInterpolation<U>[]
+    : T[P] extends object
+    ? OriginalOrStringInterpolation<T[P]> | string
+    : T[P] | string;
+};
+
+const serverlessConfiguration = <OriginalOrStringInterpolation<Serverless>>{
   ...baseServerlessConfiguration,
   service: 'my-service',
   plugins: ['serverless-webpack', 'serverless-offline'],

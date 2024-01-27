@@ -26,13 +26,13 @@
       }
     },
     "echo": {
-      "executor": "@finance-hub/nx-serverless:echo",
+      "executor": "@gprh/nx-serverless:echo",
       "options": {
         "textToEcho": "Hello World"
       }
     },
     "print": {
-      "executor": "@finance-hub/nx-serverless:print",
+      "executor": "@gprh/nx-serverless:print",
       "options": {
         "textToEcho": "Hello World"
       }

@@ -11,17 +11,17 @@
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What name would you like to use?"
+      "x-prompt": "What name would you like to use for your new stack?"
     },
     "description": {
       "type": "string",
       "description": "",
-      "x-prompt": "What is the package about?"
+      "x-prompt": "What is the stack about?"
     },
     "scope": {
       "type": "string",
       "description": "",
-      "x-prompt": "What is your organization name?"
+      "x-prompt": "What is your organization scope? (name in package.json, e.g. @<scope>/<package-name>)"
     },
     "directory": {
       "type": "string",

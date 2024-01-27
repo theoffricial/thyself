@@ -4,10 +4,7 @@ import baseServerlessConfiguration from '../../serverless.base';
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfiguration,
   service: 'my-service',
-  plugins: [
-    'serverless-webpack',
-    'serverless-offline'
-  ],
+  plugins: ['serverless-webpack', 'serverless-offline'],
   custom: {
     webpack: {
       watch: true, // # Run webpack in watch mode
@@ -19,10 +16,14 @@ const serverlessConfiguration = <Serverless>{
       // keepOutputDirectory: true, // # Whether or not to keep the output directory
     },
     'serverless-offline': {
+      // allowCache: true,
       noTimeout: true,
-      reloadHandler: false,
-      useChildProcesses: true,
-    }
+      /**
+       * @link https://github.com/dherault/serverless-offline/issues/931#issuecomment-1291164404
+       */
+      reloadHandler: true,
+      // useChildProcesses: true,
+    },
   },
   functions: {
     hello: {

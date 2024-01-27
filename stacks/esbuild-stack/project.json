@@ -1,0 +1,49 @@
+{
+  "name": "esbuild-stack",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "stacks/esbuild-stack/src",
+  "targets": {
+    "build": {
+      "executor": "@gprh/nx-serverless:package",
+      "options": {
+        "cwd": "stacks/esbuild-stack",
+        "stage": "dev"
+      }
+    },
+    "start": {
+      "executor": "@gprh/nx-serverless:offline-start",
+      "options": {
+        "cwd": "stacks/esbuild-stack",
+        "stage": "dev"
+      }
+    },
+    "deploy": {
+      "executor": "@gprh/nx-serverless:deploy",
+      "options": {
+        "cwd": "stacks/esbuild-stack",
+        "stage": "dev"
+      }
+    },
+    "remove": {
+      "executor": "@gprh/nx-serverless:remove",
+      "options": {
+        "cwd": "stacks/esbuild-stack",
+        "stage": "dev"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["stacks/esbuild-stack/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "stacks/esbuild-stack/jest.config.ts"
+      }
+    }
+  }
+}

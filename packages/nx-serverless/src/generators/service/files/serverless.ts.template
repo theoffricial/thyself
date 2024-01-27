@@ -5,9 +5,73 @@ const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfig,
   service: '<%= name %>',
   plugins: [
-    'serverless-esbuild',
+    <% if (bundlerPlugin === 'serverless-esbuild') { 'serverless-esbuild', } %>
+    <% else if (bundlerPlugin === 'serverless-webpack') { 'serverless-webpack', } %>
+    <% else if (bundlerPlugin === 'serverless-plugin-typescript') { 'serverless-plugin-typescript', } %>
     'serverless-offline'
   ],
+  package: {
+    /**
+     * This will switch the plugin to per function packaging.
+     * The individual packaging needs more time at the packaging phase, but you'll get that paid back twice at runtime.
+     */
+    individually: true,
+    include: [],
+    exclude: []
+    patterns: []
+  },
+  custom: {
+    <% if (bundlerPlugin === 'serverless-esbuild') {
+      /** @link https://www.serverless.com/plugins/serverless-webpack */ 
+      webpack: {
+        /** 
+         * Name of webpack configuration file
+         * @link https://www.serverless.com/plugins/serverless-webpack#configure
+         */
+        webpackConfig: 'webpack.config.ts',
+        /**
+         * enable auto-packing of external modules
+         * By default, the plugin will try to bundle all dependencies. However, you don't want to include all modules in some cases such as selectively import, excluding builtin package (ie: aws-sdk) and handling webpack-incompatible modules.
+         * @link https://www.serverless.com/plugins/serverless-webpack#aws-sdk
+         */
+        includeModules: {
+          forceExclude: [
+            'aws-sdk',
+            '@aws-sdk/**'
+          ],
+          /**
+           * Sometimes it might happen that you use dynamic requires in your code, i.e. you require modules that are only known at runtime. 
+           * Webpack is not able to detect such externals and the compiled package will miss the needed dependencies.
+           * @link https://www.serverless.com/plugins/serverless-webpack#forced-inclusion
+           */
+          forceInclude: []
+        },
+        /**
+         * Packager that will be used to package your external modules
+         * @link https://www.serverless.com/plugins/serverless-webpack#packagers
+         */
+        packager: '<% packageManager %>',
+        /**
+         * Exclude files that match a glob from function resolution
+         * @link https://www.serverless.com/plugins/serverless-webpack#exclude-files-with-similar-names
+         */
+        excludeFiles: '**/*.(spec|test).(js|ts)',
+        /**
+         * 
+         * 5 is desired concurrency, defaults to the number of available cores
+         * @link https://www.serverless.com/plugins/serverless-webpack#individual-packaging-concurrency
+         */
+        concurrency: 5,
+        /**
+         * Keep output directory after packaging
+         */
+        keepOutputDirectory: false,
+      } 
+    } %>
+    'serverless-offline': {
+      noTimeout: true,
+    }
+  },
   functions: {
     hello: {
       handler: 'src/handler.hello',

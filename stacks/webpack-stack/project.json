@@ -1,0 +1,49 @@
+{
+  "name": "webpack-stack",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "stacks/webpack-stack/src",
+  "targets": {
+    "build": {
+      "executor": "@gprh/nx-serverless:package",
+      "options": {
+        "cwd": "stacks/webpack-stack",
+        "stage": "dev"
+      }
+    },
+    "start": {
+      "executor": "@gprh/nx-serverless:offline-start",
+      "options": {
+        "cwd": "stacks/webpack-stack",
+        "stage": "dev"
+      }
+    },
+    "deploy": {
+      "executor": "@gprh/nx-serverless:deploy",
+      "options": {
+        "cwd": "stacks/webpack-stack",
+        "stage": "dev"
+      }
+    },
+    "remove": {
+      "executor": "@gprh/nx-serverless:remove",
+      "options": {
+        "cwd": "stacks/webpack-stack",
+        "stage": "dev"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["stacks/webpack-stack/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "stacks/webpack-stack/jest.config.ts"
+      }
+    }
+  }
+}

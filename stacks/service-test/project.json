@@ -5,19 +5,19 @@
   "sourceRoot": "stacks/service-test/src",
   "targets": {
     "print": {
-      "executor": "@finance-hub/nx-serverless:print",
+      "executor": "@gprh/nx-serverless:print",
       "options": {
         "cwd": "stacks/service-test"
       }
     },
     "start": {
-      "executor": "@finance-hub/nx-serverless:offline-start",
+      "executor": "@gprh/nx-serverless:offline-start",
       "options": {
         "cwd": "stacks/service-test"
       }
     },
     "package": {
-      "executor": "@finance-hub/nx-serverless:package",
+      "executor": "@gprh/nx-serverless:package",
       "options": {
         "cwd": "stacks/service-test",
         "stage": "abc"

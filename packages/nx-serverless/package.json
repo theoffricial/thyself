@@ -1,5 +1,5 @@
 {
-  "name": "@finance-hub/nx-serverless",
+  "name": "@gprh/nx-serverless",
   "version": "0.0.1",
   "dependencies": {
     "@nx/devkit": "^17.2.8",
@@ -10,7 +10,9 @@
     "prettyjson": "^1.2.5",
     "serverless": "^3.38.0",
     "strip-ansi": "^6.0.1",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "date-fns": "^3.3.1",
+    "@gprh/clean-empty-values": "*"
   },
   "type": "commonjs",
   "main": "./src/index.js",

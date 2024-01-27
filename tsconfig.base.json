@@ -16,9 +16,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@finance-hub/nx-serverless": ["packages/nx-serverless/src/index.ts"],
-      "@finance-hub/test": ["packages/test/src/index.ts"],
-      "clean-empty-values": ["packages/clean-empty-values/src/index.ts"]
+      "@gprh/clean-empty-values": ["packages/cev/src/index.ts"],
+      "@gprh/nx-serverless": ["packages/nx-serverless/src/index.ts"],
+      "@gprh/test": ["packages/test/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

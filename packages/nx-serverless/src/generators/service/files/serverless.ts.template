@@ -1,13 +1,19 @@
 import type { Serverless } from 'serverless/aws';
 import baseServerlessConfig from '../../serverless.base';
+import * as os from "node:os";
+
 
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfig,
   service: '<%= name %>',
   plugins: [
-    <% if (bundlerPlugin === 'serverless-esbuild') { 'serverless-esbuild', } %>
-    <% else if (bundlerPlugin === 'serverless-webpack') { 'serverless-webpack', } %>
-    <% else if (bundlerPlugin === 'serverless-plugin-typescript') { 'serverless-plugin-typescript', } %>
+    <% if (bundlerPlugin === 'serverless-esbuild') { %>
+    'serverless-esbuild', 
+    <% } else if (bundlerPlugin === 'serverless-webpack') { %>
+    'serverless-webpack',
+    <% } else if (bundlerPlugin === 'serverless-plugin-typescript') { %>
+    'serverless-plugin-typescript',
+    <% } %>
     'serverless-offline'
   ],
   package: {
@@ -16,58 +22,81 @@ const serverlessConfiguration = <Serverless>{
      * The individual packaging needs more time at the packaging phase, but you'll get that paid back twice at runtime.
      */
     individually: true,
+    excludeDevDependencies: true,
+    <% if (bundlerPlugin === 'serverless-webpack') { %>
+    // webpack.config.ts takes care of file inclusion
     include: [],
-    exclude: []
+    // webpack.config.ts takes care of file exclusion
+    exclude: [],
+    <% } %>
+    <% if (bundlerPlugin === 'serverless-webpack') { %>
+    include: [],
+    exclude: [],
+    <% } %>
+    <% else { %>
+    include: [],
+    exclude: [],
+    <% } %>
     patterns: []
   },
   custom: {
-    <% if (bundlerPlugin === 'serverless-esbuild') {
-      /** @link https://www.serverless.com/plugins/serverless-webpack */ 
-      webpack: {
-        /** 
-         * Name of webpack configuration file
-         * @link https://www.serverless.com/plugins/serverless-webpack#configure
-         */
-        webpackConfig: 'webpack.config.ts',
-        /**
-         * enable auto-packing of external modules
-         * By default, the plugin will try to bundle all dependencies. However, you don't want to include all modules in some cases such as selectively import, excluding builtin package (ie: aws-sdk) and handling webpack-incompatible modules.
-         * @link https://www.serverless.com/plugins/serverless-webpack#aws-sdk
-         */
-        includeModules: {
-          forceExclude: [
-            'aws-sdk',
-            '@aws-sdk/**'
-          ],
-          /**
-           * Sometimes it might happen that you use dynamic requires in your code, i.e. you require modules that are only known at runtime. 
-           * Webpack is not able to detect such externals and the compiled package will miss the needed dependencies.
-           * @link https://www.serverless.com/plugins/serverless-webpack#forced-inclusion
-           */
-          forceInclude: []
-        },
-        /**
-         * Packager that will be used to package your external modules
-         * @link https://www.serverless.com/plugins/serverless-webpack#packagers
-         */
-        packager: '<% packageManager %>',
-        /**
-         * Exclude files that match a glob from function resolution
-         * @link https://www.serverless.com/plugins/serverless-webpack#exclude-files-with-similar-names
-         */
-        excludeFiles: '**/*.(spec|test).(js|ts)',
-        /**
-         * 
-         * 5 is desired concurrency, defaults to the number of available cores
-         * @link https://www.serverless.com/plugins/serverless-webpack#individual-packaging-concurrency
-         */
-        concurrency: 5,
-        /**
-         * Keep output directory after packaging
-         */
-        keepOutputDirectory: false,
+    <% if (bundlerPlugin === 'serverless-esbuild') { %>
+    esbuild: {
+      config: './esbuild.config.ts',
+      bundle: true,
+      keepOutputDirectory: false,
+      outputBuildFolder: '.build',
+      outputWorkFolder: '.esbuild',
+      packager: '<%= packageManager %>',
+      packagerOptions: {},
+      watch: {
+        pattern: ['src/**/*.ts'],
+        ignore: ['.esbuild', 'dist', 'node_modules', '.build'],
       } 
-    } %>
+    },
+    <% } else if (bundlerPlugin === 'serverless-webpack') { %>
+    /** @link https://www.serverless.com/plugins/serverless-webpack */ 
+    webpack: {
+      /** 
+        * Name of webpack configuration file
+        * @link https://www.serverless.com/plugins/serverless-webpack#configure
+        */
+      webpackConfig: 'webpack.config.ts',
+      /**
+        * Packager that will be used to package your external modules
+        * @link https://www.serverless.com/plugins/serverless-webpack#packagers
+        */
+      packager: '<%= packageManager %>',
+      /**
+        * enable auto-packing of external modules
+        * By default, the plugin will try to bundle all dependencies. However, you don't want to include all modules in some cases such as selectively import, excluding builtin package (ie: aws-sdk) and handling webpack-incompatible modules.
+        * @link https://www.serverless.com/plugins/serverless-webpack#aws-sdk
+        */
+      includeModules: true,
+      /**
+        * 
+        * 5 is desired concurrency, defaults to the number of available cores
+        * @link https://www.serverless.com/plugins/serverless-webpack#individual-packaging-concurrency
+        */
+      concurrency: 5 || os.cpus().length,
+      /**
+        * Exclude files that match a glob from function resolution
+        * @link https://www.serverless.com/plugins/serverless-webpack#exclude-files-with-similar-names
+        */
+      excludeFiles: '**/{node_modules,__mocks__,__tests__,.serverless,.webpack,.webpackCache,.husky,.github,.jest,.vscode}',
+      /**
+        * Matches filenames based on two criteria:
+        *
+        * 1. Directory Exclusion: Matches any file within specific directories
+        *    (including subdirectories) OR
+        * 2. File Extension: Matches any file ending with specific extensions
+        *    (.spec.js, .spec.ts, .test.js, .test.ts).
+        *
+        * @link https://www.serverless.com/plugins/serverless-webpack#exclude-files-with-regular-expression
+        */
+      excludeRegex: '^(?:__mocks__|__tests__|node_modules|.serverless|.webpack|.webpackCache|.husky|.github|.jest|.vscode)/.*|.*?\.(?:spec|test)\.(?:js|ts)$',
+    },
+    <% } %>
     'serverless-offline': {
       noTimeout: true,
     }

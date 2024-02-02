@@ -128,19 +128,25 @@ export async function serviceGenerator(
     '@types/aws-lambda': '^8.10.72',
     '@types/serverless': '^1.78.0',
     'serverless-offline': "^13.3.2",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
     ...(resolvedOptions.bundlerPlugin === 'serverless-esbuild' && {
       'serverless-esbuild': '^1.50.1',
       'esbuild': '^0.8.41',
     }),
     ...(resolvedOptions.bundlerPlugin === 'serverless-webpack' && {
       'serverless-webpack': '^5.13.0',
-      'webpack': '^5.28.0',
+      "webpack": "^5.89.0",
+      "@types/webpack": "^5.28.5",
+      "@types/webpack-node-externals": "^3.0.4",
+      "ts-loader": "^9.5.1",
+      "copy-webpack-plugin": "^12.0.2",
+      "terser-webpack-plugin": "^5.3.10",
+      "webpack-node-externals": "^3.0.0",
     }),
     ...(resolvedOptions.bundlerPlugin === 'serverless-plugin-typescript' && {
       'serverless-plugin-typescript': '^1.50.1',
     }),
-    // 'typescript': '^4.2.4',
-    // 'ts-node': '^10.0.0',
   }
 
   addDependenciesToPackageJson(tree, dependencies, devDependencies);

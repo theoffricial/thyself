@@ -1,6 +1,5 @@
 import type { Serverless } from 'serverless/aws';
 import baseServerlessConfiguration from '../../serverless.base';
-import type {WatchOptions } from 'chokidar';
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfiguration,
   service: 'service-test',
@@ -37,7 +36,7 @@ const serverlessConfiguration = <Serverless>{
       watch: {
         pattern: ['src/**/*.ts'],
         ignore: ['.esbuild', 'dist', 'node_modules', '.build'],
-        chokidar: { ignoreInitial: true, usePolling: true, useFsEvents: true, } as WatchOptions,
+        // chokidar: { ignoreInitial: true, usePolling: true, useFsEvents: true, } as WatchOptions,
       } 
     }
   },

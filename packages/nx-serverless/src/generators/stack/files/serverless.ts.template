@@ -8,17 +8,28 @@ const serverlessConfiguration = <Serverless>{
   service: '<%= name %>',
   plugins: [
     // make sure that your bundler plugin precedes `serverless-offline` as the order is important.
-    <% if (bundlerPlugin === 'serverless-esbuild') { %>
+    <% if (bundler === 'esbuild') { %>
     /** @link https://www.npmjs.com/package/serverless-esbuild */
     'serverless-esbuild', 
     /** @link https://www.npmjs.com/package/serverless-webpack */
-    <% } else if (bundlerPlugin === 'serverless-webpack') { %>
+    <% } else if (bundler === 'webpack') { %>
     'serverless-webpack',
     /** @link https://www.npmjs.com/package/serverless-plugin-typescript */
-    <% } else if (bundlerPlugin === 'serverless-plugin-typescript') { %>
+    <% } else if (bundler === 'tsc') { %>
     'serverless-plugin-typescript',
     <% } %>
-    'serverless-offline'
+    'serverless-offline',
+    /** 
+     * this should go before serverless-plugin-include-dependencies if added
+     * @link https://www.npmjs.com/package/serverless-plugin-common-excludes
+     */
+    serverless-plugin-common-excludes,
+    <% } else if (bundler === 'tsc') { %>
+    /**
+     * @link https://www.npmjs.com/package/serverless-plugin-include-dependencies
+     */
+    'serverless-plugin-include-dependencies',
+    <% } %>
   ],
   package: {
     /**
@@ -27,14 +38,14 @@ const serverlessConfiguration = <Serverless>{
      */
     individually: true,
     excludeDevDependencies: true,
-    <% if (bundlerPlugin === 'serverless-webpack') { %>
+    <% if (bundler === 'webpack') { %>
     // webpack.config.ts takes care of file inclusion
     include: [],
     // webpack.config.ts takes care of file exclusion
     exclude: ['node_modules/@aws-sdk/**',],
     patterns: ['!.git/**', 'node_modules/@aws-sdk/**']
     <% } %>
-    <% if (bundlerPlugin === 'serverless-webpack') { %>
+    <% if (bundler === 'webpack') { %>
     include: [],
     exclude: [],
     <% } %>
@@ -45,7 +56,7 @@ const serverlessConfiguration = <Serverless>{
     patterns: ['!.git/**', 'src/**', '!node_modules/@aws-sdk/**']
   },
   custom: {
-    <% if (bundlerPlugin === 'serverless-esbuild') { %>
+    <% if (bundler === 'esbuild') { %>
     esbuild: {
       /** @link https://www.npmjs.com/package/serverless-esbuild#advanced-configuration */
       config: 'esbuild.config.ts',
@@ -66,7 +77,7 @@ const serverlessConfiguration = <Serverless>{
         chokidar: { ignoreInitial: true }
       } 
     },
-    <% } else if (bundlerPlugin === 'serverless-webpack') { %>
+    <% } else if (bundler === 'webpack') { %>
     /** @link https://www.serverless.com/plugins/serverless-webpack */ 
     webpack: {
       /** 

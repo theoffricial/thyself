@@ -1,33 +1,33 @@
 import {
   addDependenciesToPackageJson,
   addProjectConfiguration,
-  // ensurePackage,
+  workspaceLayout,
   formatFiles,
   generateFiles,
   installPackagesTask,
   names,
   Tree,
+  readJson,
 } from '@nx/devkit';
 import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
 import { addJest } from './jest-config';
 
-// import { Linter, lintProjectGenerator } from '@nx/eslint';
-
-// thyself - Growth, Productivity, Reliability, High-performance
 export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
 ) {
-  const resolvedOptions: Required<ServiceGeneratorSchema> = {
-    ...options,
+  const {appsDir} = workspaceLayout();
+  const packageJson = await readJson(tree, 'package.json');
+  const resolvedOptions: Required<ServiceGeneratorSchema> =  {
     description: options.description || '',
-    directory: options.directory || 'stacks',
+    appsDir,
     packageManager: options.packageManager || 'npm',
     name: names(options.name).fileName,
-    bundlerPlugin: options.bundlerPlugin || 'serverless-esbuild',
+    bundler: options.bundler || 'webpack',
+    scope: options.scope || packageJson.name
   };
-  const projectRoot = `${resolvedOptions.directory}/${resolvedOptions.name}`;
+  const projectRoot = `${resolvedOptions.appsDir}/${resolvedOptions.name}`;
 
   addProjectConfiguration(tree, resolvedOptions.name, {
     root: projectRoot,
@@ -40,7 +40,6 @@ export async function serviceGenerator(
           cwd: projectRoot,
           stage: 'dev',
         },
-        // ...buildRunCommandConfig(projectRoot, 'serverless package'),
       },
       start: {
         executor: '@thyself/nx-serverless:offline-start',
@@ -69,12 +68,6 @@ export async function serviceGenerator(
           lintFilePatterns: [projectRoot + '/**/*.ts'],
         },
       },
-      // test: {
-      //   executor: '@nx/jest:jest',
-      //   options: {
-      //     jestConfig: [projectRoot + 'jest.config.ts'],
-      //   },
-      // },
     },
   });
 
@@ -86,14 +79,14 @@ export async function serviceGenerator(
 
   // const { } = ensurePackage('@thyself/nx-serverless', '0.0.1');
 
-  if (resolvedOptions.bundlerPlugin === 'serverless-esbuild')  {
+  if (resolvedOptions.bundler === 'esbuild')  {
     generateFiles(
       tree,
       path.join(__dirname, 'bundler-files', 'esbuild'),
       projectRoot,
       resolvedOptions
     )
-  } else if (resolvedOptions.bundlerPlugin === 'serverless-webpack')  {
+  } else if (resolvedOptions.bundler === 'webpack')  {
     generateFiles(
       tree,
       path.join(__dirname, 'bundler-files', 'webpack'),
@@ -130,11 +123,11 @@ export async function serviceGenerator(
     'serverless-offline': "^13.3.2",
     "typescript": "^5.3.3",
     "ts-node": "^10.9.2",
-    ...(resolvedOptions.bundlerPlugin === 'serverless-esbuild' && {
+    ...(resolvedOptions.bundler === 'esbuild' && {
       'serverless-esbuild': '^1.50.1',
       'esbuild': '^0.8.41',
     }),
-    ...(resolvedOptions.bundlerPlugin === 'serverless-webpack' && {
+    ...(resolvedOptions.bundler === 'webpack' && {
       'serverless-webpack': '^5.13.0',
       "webpack": "^5.89.0",
       "@types/webpack": "^5.28.5",
@@ -144,7 +137,7 @@ export async function serviceGenerator(
       "terser-webpack-plugin": "^5.3.10",
       "webpack-node-externals": "^3.0.0",
     }),
-    ...(resolvedOptions.bundlerPlugin === 'serverless-plugin-typescript' && {
+    ...(resolvedOptions.bundler === 'tsc' && {
       'serverless-plugin-typescript': '^1.50.1',
     }),
   }

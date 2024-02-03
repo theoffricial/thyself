@@ -19,7 +19,7 @@ export interface InvokeLocalExecutor {
    */
   "serverless-file-ext"?: "ts" | "js" | "yml" | "json";
   /**
-   * region where the service should be deployed
+   * region where the stack should be deployed
    */
   region?: string;
   /**
@@ -83,7 +83,7 @@ export interface InvokeLocalExecutor {
    */
   raw?: boolean;
   /**
-   * Context of the service
+   * Context of the stack
    */
   context?: string;
   /**

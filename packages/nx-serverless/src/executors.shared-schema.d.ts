@@ -13,7 +13,7 @@ export interface BaseServerlessExecutorSchema extends Record<string, unknown> {
     | 'yml'
     | 'json';
 
-  /** Region of the service */
+  /** Region of the stack */
   region?: string;
   /** AWS profile to use with the command */
   'aws-profile'?: string;
@@ -25,7 +25,7 @@ export interface BaseServerlessExecutorSchema extends Record<string, unknown> {
   'use-local-credentials'?: boolean;
   /** Path to serverless config file */
   config?: string;
-  /** Stage of the service */
+  /** Stage of the stack */
   stage?: string;
   /** Pass custom parameter values for "param" variable source (usage: --param="key=value") */
   param?: string;

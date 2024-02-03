@@ -47,10 +47,16 @@
         "jestConfig": "packages/nx-serverless/jest.config.ts"
       }
     },
-    "json2ts": {
+    "json2ts-executor": {
       "executor": "nx:run-commands",
       "options": {
         "command": "./node_modules/.bin/json2ts -i packages/nx-serverless/src/executors/{args.executor}/schema.json -o packages/nx-serverless/src/executors/{args.executor}/{args.executor}.schema.d.ts"
+      }
+    },
+    "json2ts-generator": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./node_modules/.bin/json2ts -i packages/nx-serverless/src/generators/{args.generator}/schema.json -o packages/nx-serverless/src/generators/{args.generator}/{args.generator}.schema.d.ts"
       }
     }
   },

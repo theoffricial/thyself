@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "Stack",
+  "title": "",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the stack",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for your new stack?",
+      "x-deprecated": false
+    },
+    "description": {
+      "type": "string",
+      "description": "",
+      "x-prompt": "What is the stack about?"
+    },
+    "scope": {
+      "type": "string",
+      "description": "The organization scope",
+      "default": "",
+      "$default": {
+        "value": ""
+      }
+    },
+    "packageManager": {
+      "type": "string",
+      "description": "The package manager to use",
+      "x-prompt": {
+        "message": "Which package manager would you like to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "npm",
+            "label": "npm"
+          },
+          {
+            "value": "yarn",
+            "label": "yarn"
+          },
+          {
+            "value": "pnpm",
+            "label": "pnpm"
+          }
+        ]
+      }
+    },
+    "bundler": {
+      "type": "string",
+      "description": "Provide the bundler",
+      "x-prompt": {
+        "message": "Which type of bundler would you like to use?",
+        "type": "list",
+        "items": [
+          {
+            "value": "webpack",
+            "label": "webpack"
+          },
+          {
+            "value": "esbuild",
+            "label": "esbuild"
+          },
+          {
+            "value": "tsc",
+            "label": "tsc"
+          }
+        ]
+      },
+      "x-deprecated": false
+    }
+  }
+}

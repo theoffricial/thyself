@@ -41,8 +41,8 @@ export async function runServerless<ExecSchema extends BaseServerlessExecutorSch
     const resolvedOptions = resolvedOptionsFn(options, context);
     loggerInit({ noColors: resolvedOptions['no-colors'] })
 
-    const absoluteServiceDir = path.join(workspaceRoot, resolvedOptions.cwd);
-    const configurationPath = path.join(absoluteServiceDir, getServerlessFile(resolvedOptions['serverless-file-ext']));
+    const absoluteStackDir = path.join(workspaceRoot, resolvedOptions.cwd);
+    const configurationPath = path.join(absoluteStackDir, getServerlessFile(resolvedOptions['serverless-file-ext']));
     const serverless = (await parseServerlessConfig(configurationPath)) as Serverless;
 
     printInputOptions(serverless, resolvedOptions);
@@ -53,7 +53,7 @@ export async function runServerless<ExecSchema extends BaseServerlessExecutorSch
 
     const customFlags: string[] = customFlagsBuilder ? customFlagsBuilder(resolvedOptions) : [];
     const commandArgs: string[] = buildServerlessCommandArgs(subCommandArgs, resolvedOptions, customFlags);
-    const spawnResult = await childProcessExecution(commandArgs, absoluteServiceDir, { noColors: Boolean(resolvedOptions['no-colors']) });
+    const spawnResult = await childProcessExecution(commandArgs, absoluteStackDir, { noColors: Boolean(resolvedOptions['no-colors']) });
 
     return { success: !spawnResult.includes('error') };
 }

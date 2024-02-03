@@ -8,7 +8,7 @@ export interface ServiceGeneratorSchema {
   name: string;
   description?: string;
   /** A directory where the lib is placed. */
-  directory?: string;
+  appsDir?: string;
   /** */
   packageManager?: PackageManager;
   /**
@@ -16,5 +16,6 @@ export interface ServiceGeneratorSchema {
    * Default: serverless-esbuild
    * Accepted values: serverless-esbuild, serverless-webpack, serverless-plugin-typescript
    */
-  bundlerPlugin?: 'serverless-esbuild' | 'serverless-webpack' | 'serverless-plugin-typescript';
+  bundler?: 'esbuild' | 'webpack' | 'tsc';
+  scope?: string;
 }

@@ -24,7 +24,7 @@ const serverlessConfiguration = <Serverless>{
      * @link https://www.npmjs.com/package/serverless-plugin-common-excludes
      */
     serverless-plugin-common-excludes,
-    <% } else if (bundler === 'tsc') { %>
+    <% if (bundler === 'tsc') { %>
     /**
      * @link https://www.npmjs.com/package/serverless-plugin-include-dependencies
      */
@@ -44,12 +44,10 @@ const serverlessConfiguration = <Serverless>{
     // webpack.config.ts takes care of file exclusion
     exclude: ['node_modules/@aws-sdk/**',],
     patterns: ['!.git/**', 'node_modules/@aws-sdk/**']
-    <% } %>
-    <% if (bundler === 'webpack') { %>
+    <% } else if (bundler === 'webpack') { %>
     include: [],
     exclude: [],
-    <% } %>
-    <% else { %>
+    <% } else if (bundler === 'tsc') { %>
     include: [],
     exclude: [],
     <% } %>

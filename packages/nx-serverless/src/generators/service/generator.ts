@@ -14,7 +14,7 @@ import { addJest } from './jest-config';
 
 // import { Linter, lintProjectGenerator } from '@nx/eslint';
 
-// gprh - Growth, Productivity, Reliability, High-performance
+// thyself - Growth, Productivity, Reliability, High-performance
 export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
@@ -35,7 +35,7 @@ export async function serviceGenerator(
     sourceRoot: `${projectRoot}/src`,
     targets: {
       build: {
-        executor: '@gprh/nx-serverless:package',
+        executor: '@thyself/nx-serverless:package',
         options: {
           cwd: projectRoot,
           stage: 'dev',
@@ -43,21 +43,21 @@ export async function serviceGenerator(
         // ...buildRunCommandConfig(projectRoot, 'serverless package'),
       },
       start: {
-        executor: '@gprh/nx-serverless:offline-start',
+        executor: '@thyself/nx-serverless:offline-start',
         options: {
           cwd: projectRoot,
           stage: 'dev',
         },
       },
       deploy: {
-        executor: '@gprh/nx-serverless:deploy',
+        executor: '@thyself/nx-serverless:deploy',
         options: {
           cwd: projectRoot,
           stage: 'dev',
         },
       },
       remove: {
-        executor: '@gprh/nx-serverless:remove',
+        executor: '@thyself/nx-serverless:remove',
         options: {
           cwd: projectRoot,
           stage: 'dev',
@@ -84,7 +84,7 @@ export async function serviceGenerator(
   //   skipFormat: true,
   // });
 
-  // const { } = ensurePackage('@gprh/nx-serverless', '0.0.1');
+  // const { } = ensurePackage('@thyself/nx-serverless', '0.0.1');
 
   if (resolvedOptions.bundlerPlugin === 'serverless-esbuild')  {
     generateFiles(

@@ -5,7 +5,7 @@
   "sourceRoot": "stacks/slsw/src",
   "targets": {
     "start": {
-      "executor": "@gprh/nx-serverless:offline-start",
+      "executor": "@thyself/nx-serverless:offline-start",
       "options": {
         "cwd": "stacks/slsw"
       }

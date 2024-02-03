@@ -7,10 +7,14 @@ const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfig,
   service: '<%= name %>',
   plugins: [
+    // make sure that your bundler plugin precedes `serverless-offline` as the order is important.
     <% if (bundlerPlugin === 'serverless-esbuild') { %>
+    /** @link https://www.npmjs.com/package/serverless-esbuild */
     'serverless-esbuild', 
+    /** @link https://www.npmjs.com/package/serverless-webpack */
     <% } else if (bundlerPlugin === 'serverless-webpack') { %>
     'serverless-webpack',
+    /** @link https://www.npmjs.com/package/serverless-plugin-typescript */
     <% } else if (bundlerPlugin === 'serverless-plugin-typescript') { %>
     'serverless-plugin-typescript',
     <% } %>
@@ -27,7 +31,8 @@ const serverlessConfiguration = <Serverless>{
     // webpack.config.ts takes care of file inclusion
     include: [],
     // webpack.config.ts takes care of file exclusion
-    exclude: [],
+    exclude: ['node_modules/@aws-sdk/**',],
+    patterns: ['!.git/**', 'node_modules/@aws-sdk/**']
     <% } %>
     <% if (bundlerPlugin === 'serverless-webpack') { %>
     include: [],
@@ -37,21 +42,28 @@ const serverlessConfiguration = <Serverless>{
     include: [],
     exclude: [],
     <% } %>
-    patterns: []
+    patterns: ['!.git/**', 'src/**', '!node_modules/@aws-sdk/**']
   },
   custom: {
     <% if (bundlerPlugin === 'serverless-esbuild') { %>
     esbuild: {
-      config: './esbuild.config.ts',
-      bundle: true,
-      keepOutputDirectory: false,
-      outputBuildFolder: '.build',
-      outputWorkFolder: '.esbuild',
+      /** @link https://www.npmjs.com/package/serverless-esbuild#advanced-configuration */
+      config: 'esbuild.config.ts',
+      /**
+       * The number of concurrent zip and bundle operations to run at once (This can be memory intensive).
+       * 5 should be relatively a good number
+       */
+      concurrency: 5 || os.cpus().length,
+      /**
+       * Disables the use of esbuild incremental compilation.
+       */
+      disableIncremental: false,
       packager: '<%= packageManager %>',
-      packagerOptions: {},
+      /** @link https://www.npmjs.com/package/serverless-esbuild#watch-options */
       watch: {
         pattern: ['src/**/*.ts'],
         ignore: ['.esbuild', 'dist', 'node_modules', '.build'],
+        chokidar: { ignoreInitial: true }
       } 
     },
     <% } else if (bundlerPlugin === 'serverless-webpack') { %>
@@ -97,8 +109,20 @@ const serverlessConfiguration = <Serverless>{
       excludeRegex: '^(?:__mocks__|__tests__|node_modules|.serverless|.webpack|.webpackCache|.husky|.github|.jest|.vscode)/.*|.*?\.(?:spec|test)\.(?:js|ts)$',
     },
     <% } %>
+    /** @link https://www.npmjs.com/package/serverless-offline#usage-and-command-line-options */
     'serverless-offline': {
+      /** @link https://www.npmjs.com/package/serverless-offline#notimeout */
       noTimeout: true,
+      /** @link https://www.npmjs.com/package/serverless-offline#reloadhandler */
+      reloadHandler: true,
+      /** @link https://www.npmjs.com/package/serverless-offline#noprependstageinurl */
+      noPrependStageInUrl: true,
+      /** @link https://www.npmjs.com/package/serverless-offline#noauth */
+      noAuth: true,
+      /** @link https://www.npmjs.com/package/serverless-offline#httpport */
+      httpPort: 3000,
+      /** @link https://www.npmjs.com/package/serverless-offline#lambdaport */
+      lambdaPort: 3002,
     }
   },
   functions: {

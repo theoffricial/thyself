@@ -5,19 +5,19 @@
   "sourceRoot": "stacks/service-test/src",
   "targets": {
     "print": {
-      "executor": "@gprh/nx-serverless:print",
+      "executor": "@thyself/nx-serverless:print",
       "options": {
         "cwd": "stacks/service-test"
       }
     },
     "start": {
-      "executor": "@gprh/nx-serverless:offline-start",
+      "executor": "@thyself/nx-serverless:offline-start",
       "options": {
         "cwd": "stacks/service-test"
       }
     },
     "package": {
-      "executor": "@gprh/nx-serverless:package",
+      "executor": "@thyself/nx-serverless:package",
       "options": {
         "cwd": "stacks/service-test",
         "stage": "abc"

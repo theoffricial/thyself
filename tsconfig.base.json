@@ -16,9 +16,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@gprh/clean-empty-values": ["packages/cev/src/index.ts"],
-      "@gprh/nx-serverless": ["packages/nx-serverless/src/index.ts"],
-      "@gprh/test": ["packages/test/src/index.ts"]
+      "@thyself/clean-empty-values": ["packages/cev/src/index.ts"],
+      "@thyself/nx-serverless": ["packages/nx-serverless/src/index.ts"],
+      "@thyself/test": ["packages/test/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

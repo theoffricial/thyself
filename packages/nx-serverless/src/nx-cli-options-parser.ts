@@ -1,7 +1,7 @@
 import { ExecutorContext, workspaceLayout } from '@nx/devkit';
 import path from 'path';
 import { BaseServerlessExecutorSchema } from './executors.shared-schema';
-import { cleanEmptyValues } from '@gprh/clean-empty-values';
+import { cleanEmptyValues } from '@thyself/clean-empty-values';
 import prettyjson from 'prettyjson';
 import { logger } from './logger';
 import { Serverless } from 'serverless/aws';

@@ -1,4 +1,30 @@
-# nx-serverless
+# NX Serverless
+
+A full Serverless framework support for the NX environment.
+
+## Feature Highlight
+
+* NX executor with a full support of the Serverless CLI.
+* NX generator to generate new serverless stacks (projects) out-of-the-box
+    * Support `npm`, `yarn` and `pnpm` environments.
+    * Support of `serverless-esbuild`, `serverless-webpack`, `serverless-plugin-typescript`.
+* Cold-start optimized setup using the Serverless & AWS best-practices.
+* Advanced setup & Fully documented serverless setup when using `esbuild` or `webpack` that optimized for both the local environment and cloud environments.
+
+## Install
+
+```bash
+// npm
+npm i -D @thyself/nx-serverless
+// yarn
+yarn add @thyself/nx-serverless -D
+// pnpm
+pnpm add @thyself/nx-serverless -D -w
+```
+
+## Usage
+
+
 
 The complete orchestrator for using Serverless Framework (+v3) with Nx.
 
@@ -25,41 +51,10 @@ pnpm add nx-serverless -D -w
 
 Run `nx build nx-serverless` to build the library.
 
-## VSCode Nx Debug Setup
+### Generator
 
-TBD
-
-## Roadmap
-
-### Executor (Nx code executor)
-
-- 🗺️ `serverless deploy` 
--  `serverless doctor`
-
-### Generator (Nx code generator)
-
-- 🗺️ Serverless app supporting `serverless.base.ts` on root folder (best for individuals).
-- 🗺️ Serverless app supporting internal package to support advanced governance (best for teams).
-
+### Executor
 
 ## Compatibility
 
-Reminder: This is an non-funded funded open-source.
-
-**Legend: 🟢 Tested 🟡 Partially tested 🔴 Not tested**
-
-### Operation Systems
-
-MacOS|Linux|Windows
-:-----:|:-----:|:-------:
-🟢|🟡|🔴
-
-### Developed with Key Technologies Versions 
-
-Key Technology|Version
-:-----:|:-----:
-Serverless framework|^3.0.0
-Nx|^15.0.0 \| ^16.0.0 \| ^17.0.0
-NodeJS|^18.16.1
-TypeScript|^4.9.0 \| ^5.0.0 
-
+Reminder: This is an non-funded open-source.

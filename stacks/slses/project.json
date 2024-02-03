@@ -5,28 +5,28 @@
   "sourceRoot": "stacks/slses/src",
   "targets": {
     "build": {
-      "executor": "@gprh/nx-serverless:package",
+      "executor": "@thyself/nx-serverless:package",
       "options": {
         "cwd": "stacks/slses",
         "stage": "dev"
       }
     },
     "start": {
-      "executor": "@gprh/nx-serverless:offline-start",
+      "executor": "@thyself/nx-serverless:offline-start",
       "options": {
         "cwd": "stacks/slses",
         "stage": "dev"
       }
     },
     "deploy": {
-      "executor": "@gprh/nx-serverless:deploy",
+      "executor": "@thyself/nx-serverless:deploy",
       "options": {
         "cwd": "stacks/slses",
         "stage": "dev"
       }
     },
     "remove": {
-      "executor": "@gprh/nx-serverless:remove",
+      "executor": "@thyself/nx-serverless:remove",
       "options": {
         "cwd": "stacks/slses",
         "stage": "dev"

@@ -191,7 +191,7 @@ importers:
 
   packages/nx-serverless:
     dependencies:
-      '@gprh/clean-empty-values':
+      '@thyself/clean-empty-values':
         specifier: '*'
         version: link:../cev
       '@nx/devkit':

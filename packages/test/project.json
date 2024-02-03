@@ -26,13 +26,13 @@
       }
     },
     "echo": {
-      "executor": "@gprh/nx-serverless:echo",
+      "executor": "@thyself/nx-serverless:echo",
       "options": {
         "textToEcho": "Hello World"
       }
     },
     "print": {
-      "executor": "@gprh/nx-serverless:print",
+      "executor": "@thyself/nx-serverless:print",
       "options": {
         "textToEcho": "Hello World"
       }

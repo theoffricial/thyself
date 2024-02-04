@@ -1,5 +1,5 @@
 import { BaseServerlessExecutorSchema } from "./executors.shared-schema";
-import prettyjson from 'prettyjson';
+import * as prettyjson from 'prettyjson';
 import { logger } from "./logger";
 
 export function getServerlessFile(ext: BaseServerlessExecutorSchema['serverless-file-ext']): 'serverless.ts' | 'serverless.js' | 'serverless.yml' | 'serverless.json' {
@@ -17,31 +17,32 @@ export function getServerlessConfigFilePathArgs<T extends BaseServerlessExecutor
 
 export function buildServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema, customFlags: string[]) {
     const configArgs = getServerlessConfigFilePathArgs(baseOptions);
-      const commandArgs: string[] = [
+    const commandArgs: string[] = [
           'serverless',
           ...serverlessArgs,
           ...configArgs,
-      ];
-  
-      if (baseOptions.help) {
-          commandArgs.push('--help');
-      } else if (baseOptions.version) {
-          commandArgs.push('--version');
-      } else {
-          commandArgs.push(...customFlags);
-          commandArgs.push(...getSharedServerlessOptionsArgs(baseOptions))
-      }
-  
-      printServerlessCommandArgs(commandArgs, baseOptions);
+    ];
+    
+    if (baseOptions.help) {
+        commandArgs.push('--help');
+    } else if (baseOptions.version) {
+        commandArgs.push('--version');
+    } else {
+        commandArgs.push(...customFlags);
+        commandArgs.push(...getSharedServerlessOptionsArgs(baseOptions))
+    }
 
-      return commandArgs;
+    printServerlessCommandArgs(commandArgs, baseOptions);
+
+    return commandArgs;
   }
 
   export function printServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema) {
+    const prettyCommand = prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors']});
     const printMessage =
         '\nServerless command:\n' +
-        '------------------------\n';
-        prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors']}) + 
+        '------------------------\n' +
+        prettyCommand + 
         '\n------------------------';
 
     logger.debug(printMessage);

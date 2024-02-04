@@ -59,15 +59,15 @@
         "items": [
           {
             "value": "webpack",
-            "label": "webpack"
+            "label": "webpack (serverless-webpack)"
           },
           {
             "value": "esbuild",
-            "label": "esbuild"
+            "label": "esbuild (serverless-esbuild)"
           },
           {
             "value": "tsc",
-            "label": "tsc"
+            "label": "tsc (serverless-plugin-typescript)"
           }
         ]
       },

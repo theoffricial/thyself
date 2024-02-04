@@ -2,16 +2,21 @@ import {
   addDependenciesToPackageJson,
   addProjectConfiguration,
   workspaceLayout,
+  workspaceRoot,
   formatFiles,
   generateFiles,
   installPackagesTask,
   names,
   Tree,
   readJson,
+
 } from '@nx/devkit';
 import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
 import { addJest } from './jest-config';
+
+const serverless_base_path = `${workspaceRoot}/serverless.base.ts`;
+
 
 export async function serviceGenerator(
   tree: Tree,
@@ -94,6 +99,15 @@ export async function serviceGenerator(
       resolvedOptions
     )
   } 
+
+  if (tree.exists(serverless_base_path)) {
+    generateFiles(
+      tree,
+      path.join(__dirname, 'workspace-root-files'), // path to the template files
+      workspaceRoot, // destination directory
+      {}
+    );
+  }
   // else if (resolvedOptions.bundlerPlugin === 'serverless-plugin-typescript')  {
   //   generateFiles(
   //     tree,
@@ -145,7 +159,7 @@ export async function serviceGenerator(
   addDependenciesToPackageJson(tree, dependencies, devDependencies);
 
   return () => {
-    installPackagesTask(tree, false, '.', resolvedOptions.packageManager);
+    installPackagesTask(tree, false, workspaceRoot, resolvedOptions.packageManager);
   };
 }
 

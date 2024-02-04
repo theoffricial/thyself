@@ -15,9 +15,6 @@ import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
 import { addJest } from './jest-config';
 
-const serverless_base_path = `${workspaceRoot}/serverless.base.ts`;
-
-
 export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
@@ -76,14 +73,6 @@ export async function serviceGenerator(
     },
   });
 
-  // lintProjectGenerator(tree, {
-  //   project: resolvedOptions.name,
-  //   linter: Linter.EsLint,
-  //   skipFormat: true,
-  // });
-
-  // const { } = ensurePackage('@thyself/nx-serverless', '0.0.1');
-
   if (resolvedOptions.bundler === 'esbuild')  {
     generateFiles(
       tree,
@@ -100,22 +89,16 @@ export async function serviceGenerator(
     )
   } 
 
-  if (tree.exists(serverless_base_path)) {
+  const serverless_base_path = `${workspaceRoot}/serverless.base.ts`;
+
+  if (!tree.exists(serverless_base_path)) {
     generateFiles(
       tree,
-      path.join(__dirname, 'workspace-root-files'), // path to the template files
-      workspaceRoot, // destination directory
+      path.join(__dirname, 'serverless-base-file'), // path to the template files
+      '.', // destination directory
       {}
     );
   }
-  // else if (resolvedOptions.bundlerPlugin === 'serverless-plugin-typescript')  {
-  //   generateFiles(
-  //     tree,
-  //     path.join(__dirname, 'bundler-files', 'serverless-plugin-typescript'),
-  //     projectRoot,
-  //     resolvedOptions
-  //   )
-  // }
 
   generateFiles(
     tree,

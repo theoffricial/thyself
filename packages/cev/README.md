@@ -15,11 +15,11 @@ Fast object empty values cleaner.
 
 ```bash
 # npm
-npm i -D @thyself/clean-empty-values
+npm i @thyself/clean-empty-values
 # yarn
-yarn add -D @thyself/clean-empty-values
+yarn add @thyself/clean-empty-values
 # pnpm
-pnpm add @thyself/clean-empty-values -D
+pnpm add @thyself/clean-empty-values
 ```
 
 ## Usage

@@ -21,6 +21,7 @@ yarn add @thyself/nx-serverless -D
 // pnpm
 pnpm add @thyself/nx-serverless -D -w
 ```
+## Install
 
 ## Usage
 
@@ -35,17 +36,6 @@ The complete orchestrator for using Serverless Framework (+v3) with Nx.
 - ✅ `serverless offline start` (The Serverless offline plugin) 
 - ✅ `serverless print`
 - 🚧 `serverless package`
-
-## Installation
-
-```
-// npm
-npm install --save-dev nx-serverless
-// yarn
-yarn add nx-serverless -D -w
-// pnpm
-pnpm add nx-serverless -D -w
-```
 
 ## Usage
 

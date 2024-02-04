@@ -58,10 +58,12 @@ const myValue = cleanEmptyValues<MyType>(
     { x: '', y: { z: null, abc: '' } }, 
     { emptyStrings: true });
 
-myValue.abc // ❌ Type error, `"myValue.abc` is NOT known by the Typescript compiler (tsc)
-myValue.z // ✅ "myValue.z" is known by the Typescript compiler (tsc)
-myValue.z = 7 // ✅ "myValue.z" can be assigned to number.
-myValue.z = "7" // ❌ Type error, "myValue.z" must be assigned to `null | number`
+myValue.x // ❌ Type error, `"myValue.x` is NOT known "MyType".
+myValue.y.abc // ❌ Type error, `"myValue.y.abc` is NOT known by the "MyType"
+myValue.y // ✅ "myValue.y" is known by the Typescript compiler (tsc)
+myValue.y.z // ✅ "myValue.y.z" is known by the Typescript compiler (tsc)
+myValue.y.z = 7 // ✅ "myValue.z" can be assigned to number.
+myValue.y.z = "7" // ❌ Type error, "myValue.y.z" must be assigned to `null | number`
 ```
 
 ## "replaceInPlace" option

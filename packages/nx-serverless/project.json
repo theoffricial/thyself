@@ -47,6 +47,10 @@
         "jestConfig": "packages/nx-serverless/jest.config.ts"
       }
     },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs nx-serverless {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
     "json2ts-executor": {
       "executor": "nx:run-commands",
       "options": {

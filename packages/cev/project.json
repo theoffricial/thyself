@@ -11,9 +11,11 @@
         "outputPath": "dist/packages/cev",
         "main": "packages/cev/src/index.ts",
         "tsConfig": "packages/cev/tsconfig.lib.json",
-        "assets": ["packages/cev/*.md"],
-        "generatePackageJson": true,
-        "format": ["cjs"]
+        "assets": [
+          "packages/cev/*.md", 
+          "packages/cev/LICENSE"
+        ],
+        "format": ["cjs", "esm"]
       }
     },
     "lint": {
@@ -26,6 +28,10 @@
       "options": {
         "jestConfig": "packages/cev/jest.config.ts"
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs cev {args.ver} {args.tag} {args.otp}",
+      "dependsOn": ["build", "test", "lint"]
     }
   },
   "tags": []

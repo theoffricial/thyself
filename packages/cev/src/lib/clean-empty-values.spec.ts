@@ -1,31 +1,31 @@
 import { cleanEmptyValues } from './clean-empty-values';
 
 describe('cleanEmptyValues', () => {
-  it('should clean null values when nullCleaner option is true', () => {
-    expect(cleanEmptyValues({ x: null, y: '' }, { nullCleaner: true })).toEqual(
+  it('should clean null values when "null" option is true', () => {
+    expect(cleanEmptyValues({ x: null, y: '' }, { null: true })).toEqual(
       { y: '' }
     );
   });
 
-  it('should clean NaN values when nanCleaner option is true', () => {
-    expect(cleanEmptyValues({ x: NaN, y: '' }, { nanCleaner: true })).toEqual({
+  it('should clean NaN values when "nan" option is true', () => {
+    expect(cleanEmptyValues({ x: NaN, y: '' }, { nan: true })).toEqual({
       y: '',
     });
   });
 
-  it('should clean empty strings when emptyStringsCleaner option is true', () => {
+  it('should clean empty strings when "emptyStrings" option is true', () => {
     expect(
       cleanEmptyValues<{ abc: 123 }>({ x: '', y: null }, { emptyStrings: true })
     ).toEqual({ y: null });
   });
 
-  it('should clean empty objects when emptyObjectsCleaner option is true', () => {
+  it('should clean empty objects when "emptyObjects" option is true', () => {
     expect(
       cleanEmptyValues({ x: {}, y: null }, { emptyObjects: true })
     ).toEqual({ y: null });
   });
 
-  it('should clean empty arrays when emptyArraysCleaner option is true', () => {
+  it('should clean empty arrays when "emptyArrays" option is true', () => {
     expect(cleanEmptyValues({ x: [], y: null }, { emptyArrays: true })).toEqual(
       { y: null }
     );
@@ -39,8 +39,8 @@ describe('cleanEmptyValues', () => {
           emptyArrays: true,
           emptyObjects: true,
           emptyStrings: true,
-          nanCleaner: true,
-          nullCleaner: true,
+          nan: true,
+          null: true,
         }
       )
     ).toEqual({});
@@ -50,40 +50,49 @@ describe('cleanEmptyValues', () => {
     expect(
       cleanEmptyValues(
         { a: { b: { c: [{ d: undefined }] } } },
-        { emptyObjects: true, nanCleaner: true, emptyArrays: true }
+        { emptyObjects: true, nan: true, emptyArrays: true }
       )
     ).toEqual({});
   });
 
   describe('cleanInPlace', () => {
-    it('should clean null values when nullCleaner option is true and clean in place is true', () => {
+    it('should clean null values when "null" option is true and clean in place is true', () => {
       expect(
         cleanEmptyValues(
           { x: null, y: '' },
-          { nullCleaner: true, cleanInPlace: true }
+          { null: true, cleanInPlace: true }
         )
       ).toEqual({ y: '' });
     });
 
-    it('should clean NaN values when nanCleaner option is true and clean in place is true', () => {
+    it('should clean NaN values when "nan" option is true and clean in place is true', () => {
       expect(
         cleanEmptyValues(
           { x: NaN, y: '' },
-          { nanCleaner: true, cleanInPlace: true }
+          { nan: true, cleanInPlace: true }
         )
       ).toEqual({ y: '' });
     });
 
-    it('should clean empty strings when emptyStringsCleaner option is true and clean in place is true', () => {
+    it('should clean empty strings when emptyStrings option is true and clean in place is true', () => {
       expect(
         cleanEmptyValues(
           { x: '', y: null },
-          { emptyStrings: true, cleanInPlace: true }
+          { emptyStrings: true, cleanInPlace: true, }
         )
       ).toEqual({ y: null });
     });
 
-    it('should clean empty objects when emptyObjectsCleaner option is true and clean in place is true', () => {
+    it('should clean empty strings only recursively', () => {
+      expect(
+        cleanEmptyValues(
+          { x: '', y: { z: null, abc: '', zyx: undefined } },
+          { emptyStrings: true }
+        )
+      ).toEqual({ y: { z: null, zyx: undefined } });
+    });
+
+    it('should clean empty objects when emptyObjects option is true and clean in place is true', () => {
       expect(
         cleanEmptyValues(
           { x: {}, y: null },
@@ -92,7 +101,7 @@ describe('cleanEmptyValues', () => {
       ).toEqual({ y: null });
     });
 
-    it('should clean empty arrays when emptyArraysCleaner option is true and clean in place is true', () => {
+    it('should clean empty arrays when emptyArrays option is true and clean in place is true', () => {
       expect(
         cleanEmptyValues(
           { x: [], y: null },
@@ -109,8 +118,8 @@ describe('cleanEmptyValues', () => {
             emptyArrays: true,
             emptyObjects: true,
             emptyStrings: true,
-            nanCleaner: true,
-            nullCleaner: true,
+            nan: true,
+            null: true,
             cleanInPlace: true,
           }
         )
@@ -122,7 +131,7 @@ describe('cleanEmptyValues', () => {
       const data = { a: { b: { c: [{ d: undefined }] } }, z: now };
       cleanEmptyValues(data, {
         emptyObjects: true,
-        nanCleaner: true,
+        nan: true,
         emptyArrays: true,
         cleanInPlace: true,
       });

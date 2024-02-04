@@ -1,6 +1,7 @@
 export interface CleanerOptions {
   /**
    * Mutate the passed object and clean in place to save memory. (defaults to false)
+   * @default false
    */
   cleanInPlace?: boolean;
   /**
@@ -9,20 +10,29 @@ export interface CleanerOptions {
   emptyArrays?: boolean;
   /**
    * If true, empty objects will be removed from the object
+   * @default false
    */
   emptyObjects?: boolean;
   /**
    * If true, empty strings will be removed from the object
+   * @default false
    */
   emptyStrings?: boolean;
   /**
    * If true, NaN values will be removed from the object
+   * @default false
    */
-  nanCleaner?: boolean;
+  nan?: boolean;
   /**
    * If true, null values will be removed from the object
+   * @default false
    */
-  nullCleaner?: boolean;
+  null?: boolean;
+  /**
+   * If true, undefined values will be removed from the object.
+   * @default true
+   */
+  undefined?: boolean;
 }
 
 class Cleaner {
@@ -33,8 +43,9 @@ class Cleaner {
       emptyArrays: false,
       emptyObjects: false,
       emptyStrings: false,
-      nanCleaner: false,
-      nullCleaner: false,
+      nan: false,
+      null: false,
+      undefined: true,
       ...options,
     };
   }
@@ -161,19 +172,19 @@ class Cleaner {
 
   private _shouldRemoveValue(value: unknown): boolean {
     if (value === null) {
-      return Boolean(this.options.nullCleaner);
+      return this.options.null;
     }
 
     if (value === '') {
-      return Boolean(this.options.emptyStrings);
+      return this.options.emptyStrings;
     }
 
     if (typeof value === 'number' && isNaN(value)) {
-      return Boolean(this.options.nanCleaner);
+      return this.options.nan;
     }
 
     if (value === undefined) {
-      return true;
+      return this.options.undefined;
     }
 
     return false;

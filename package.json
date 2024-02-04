@@ -16,6 +16,7 @@
     "@swc-node/register": "~1.6.7",
     "@swc/cli": "~0.1.62",
     "@swc/core": "~1.3.85",
+    "@swc/jest": "0.2.20",
     "@types/aws-lambda": "^8.10.130",
     "@types/jest": "^29.4.0",
     "@types/node": "18.16.9",
@@ -53,6 +54,7 @@
     "ts-node": "10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "~5.2.2",
+    "verdaccio": "^5.0.4",
     "vite": "^5.0.0",
     "vitest": "~0.34.6",
     "webpack": "^5.89.0",
@@ -66,5 +68,8 @@
     "serverless": "^3.38.0",
     "strip-ansi": "^6.0.1",
     "tslib": "^2.3.0"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

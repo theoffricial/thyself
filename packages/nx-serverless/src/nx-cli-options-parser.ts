@@ -55,7 +55,7 @@ export function printInputOptions<T extends BaseServerlessExecutorSchema>(
       config: relativeConfigurationPath,
       runtime: serverless.provider.runtime,
     },
-    { cleanInPlace: true, nullCleaner: true, emptyStrings: true }
+    { cleanInPlace: true, null: true, emptyStrings: true }
   );
 
   const message =

@@ -1,7 +1,44 @@
 {
   "name": "@thyself/clean-empty-values",
-  "version": "0.0.1",
-  "dependencies": {},
+  "version": "1.0.0",
   "type": "commonjs",
-  "main": "./index.cjs"
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "esnext": "./index.js",
+  "private": false,
+  "license": "MIT",
+  "keywords": ["thyself", "clean-empty-values", "clean-objects"],
+  "homepage": "https://github.com/theoffricial/thyself/tree/main/packages/cev",
+  "repository": {
+    "url": "https://github.com/theoffricial/thyself",
+    "type": "git",
+    "directory": "packages/cev"
+  },
+  "author": {
+    "email": "theoffricial@gmail.com",
+    "name": "Ofri Peretz",
+    "url": "https://github.com/theoffricial"
+  },
+  "contributors": [
+    {
+      "email": "theoffricial@gmail.com",
+      "name": "Ofri Peretz",
+      "url": "https://github.com/theoffricial"
+    }
+  ],
+  "badges": [
+    {
+      "name": "npm",
+      "href": "https://www.npmjs.com/package/@thyself/clean-empty-values",
+      "description": "npm version",
+      "url": "https://www.npmjs.com/package/@thyself/clean-empty-values"
+    },
+    {
+      "name": "github",
+      "description": "GitHub repo",
+      "href": "https://github.com/theoffricial/thyself/tree/main/packages/cev",
+      "url": "https://github.com/theoffricial/thyself/tree/main/packages/cev"
+    }
+  ],
+  "dependencies": {}
 }

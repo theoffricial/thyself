@@ -12,7 +12,13 @@
     "strip-ansi": "^6.0.1",
     "chalk": "^4.1.2",
     "date-fns": "^3.3.1",
-    "@thyself/clean-empty-values": "*"
+    "@thyself/clean-empty-values": "*",
+    "esbuild": "^0.19.11",
+    "webpack": "^5.89.0",
+    "webpack-node-externals": "^3.0.0",
+    "serverless-webpack": "^5.13.0",
+    "terser-webpack-plugin": "^5.3.10",
+    "copy-webpack-plugin": "^12.0.2"
   },
   "type": "commonjs",
   "main": "./src/index.js",

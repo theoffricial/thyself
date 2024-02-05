@@ -26,7 +26,8 @@
             "serverless-webpack",
             "webpack-node-externals",
             "webpack",
-            "esbuild"
+            "esbuild",
+            "chokidar"
           ]
         }]
       }

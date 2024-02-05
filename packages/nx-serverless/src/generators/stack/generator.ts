@@ -123,6 +123,7 @@ export async function serviceGenerator(
     ...(resolvedOptions.bundler === 'esbuild' && {
       'serverless-esbuild': '^1.50.1',
       'esbuild': '^0.8.41',
+      'chokidar': '^3.5.3',
     }),
     ...(resolvedOptions.bundler === 'webpack' && {
       'serverless-webpack': '^5.13.0',

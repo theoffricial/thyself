@@ -1,7 +1,7 @@
 import type { Serverless } from 'serverless/aws';
 import baseServerlessConfig from '../../serverless.base';
+import type { WatchOptions } from 'chokidar';
 import * as os from "node:os";
-
 
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfig,
@@ -54,6 +54,9 @@ const serverlessConfiguration = <Serverless>{
   },
   custom: {
     <% if (bundler === 'esbuild') { %>
+    /** The serverless-esbuild transpilation and hot-reloading steps are not perfectly synchronized,
+     * That might lead that breakpoints on code changes will require 2 triggering to be catches while debugging.
+     */
     esbuild: {
       /** @link https://www.npmjs.com/package/serverless-esbuild#advanced-configuration */
       config: 'esbuild.config.ts',
@@ -71,7 +74,7 @@ const serverlessConfiguration = <Serverless>{
       watch: {
         pattern: ['src/**/*.ts'],
         ignore: ['.esbuild', 'dist', 'node_modules', '.build'],
-        chokidar: { ignoreInitial: true }
+        chokidar: { ignoreInitial: true } as WatchOptions,
       } 
     },
     <% } else if (bundler === 'webpack') { %>

@@ -18,7 +18,7 @@ export = (serverless: Serverless): BuildOptions => {
     /** Documentation: https://esbuild.github.io/api/#keep-names */
     keepNames: local,
     /** Documentation: https://esbuild.github.io/api/#sourcemap */
-    sourcemap: true,
+    sourcemap: local ? 'both' : true,
     /** 
      * Documentation: https://esbuild.github.io/api/#external 
      * The AWS Lambda execution environment contains a number of libraries such as the AWS SDK for 

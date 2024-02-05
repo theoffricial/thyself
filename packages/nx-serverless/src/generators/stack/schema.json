@@ -15,19 +15,6 @@
       "x-prompt": "What name would you like to use for your new stack?",
       "x-deprecated": false
     },
-    "description": {
-      "type": "string",
-      "description": "",
-      "x-prompt": "What is the stack about?"
-    },
-    "scope": {
-      "type": "string",
-      "description": "The organization scope",
-      "default": "",
-      "$default": {
-        "value": ""
-      }
-    },
     "packageManager": {
       "type": "string",
       "description": "The package manager to use",
@@ -36,16 +23,16 @@
         "type": "list",
         "items": [
           {
+            "value": "pnpm",
+            "label": "pnpm"
+          },
+          {
             "value": "npm",
             "label": "npm"
           },
           {
             "value": "yarn",
             "label": "yarn"
-          },
-          {
-            "value": "pnpm",
-            "label": "pnpm"
           }
         ]
       }
@@ -72,6 +59,21 @@
         ]
       },
       "x-deprecated": false
+    },
+    "description": {
+      "type": "string",
+      "description": "stack description",
+      "$default": {
+        "value": "A new Serverless Stack using NX"
+      }
+    },
+    "scope": {
+      "type": "string",
+      "description": "The organization scope",
+      "default": "",
+      "$default": {
+        "value": ""
+      }
     }
   }
 }

@@ -72,7 +72,7 @@ const config = (async () => {
      * The AWS Lambda execution environment contains a number of libraries such as the AWS SDK for 
      * the Node.js and Python runtimes (a full list can be found here: Lambda runtimes).
      * @link https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code
-     * */
+     */
       'aws-sdk',
       '^@aws-sdk.*$'
     ],

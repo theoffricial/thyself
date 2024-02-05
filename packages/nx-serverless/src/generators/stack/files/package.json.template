@@ -23,7 +23,7 @@
             "webpack-node-externals": "^3.0.0",
         <% } %>
         <% if (bundler === 'tsc') { %>
-            "serverless-plugin-typescript": "^1.50.1",
+            "serverless-plugin-typescript": "^2.1.5",
             "serverless-plugin-include-dependencies": "^6.0.0",
         <% } %>
         "serverless-plugin-common-excludes": "^4.0.0"

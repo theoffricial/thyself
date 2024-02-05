@@ -40,5 +40,13 @@ Thumbs.db
 
 .nx/cache
 
+# Debug/local artifacts
 **/.esbuild/**
 **/.build/**
+
+# Serverless build artifacts
+**/.serverless/**
+
+# artifacts
+serverless.base.js
+serverless.base.js.map

@@ -120,6 +120,7 @@ export async function serviceGenerator(
     'serverless-offline': "^13.3.2",
     "typescript": "^5.3.3",
     "ts-node": "^10.9.2",
+    "serverless-plugin-common-excludes": "^4.0.0",
     ...(resolvedOptions.bundler === 'esbuild' && {
       'serverless-esbuild': '^1.50.1',
       'esbuild': '^0.8.41',
@@ -136,7 +137,15 @@ export async function serviceGenerator(
       "webpack-node-externals": "^3.0.0",
     }),
     ...(resolvedOptions.bundler === 'tsc' && {
-      'serverless-plugin-typescript': '^1.50.1',
+      'serverless-plugin-typescript': '^2.1.5',
+      // Cause an issue
+      // <% if (bundler === 'tsc') { %>
+      // /**
+      //  * @link https://www.npmjs.com/package/serverless-plugin-include-dependencies
+      //  */
+      // 'serverless-plugin-include-dependencies',
+      // <% } %>
+      // 'serverless-plugin-include-dependencies': '^6.0.0'
     }),
   }
 

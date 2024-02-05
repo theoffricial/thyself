@@ -1,7 +1,15 @@
-import type { Serverless } from 'serverless/aws';
+// serverless.base.ts is not under the project, so tsc yells in editor,
+// But serverless framework under-the-hood uses ts-node that resolves serverless.ts with all its modules.
+// @ts-ignore
 import baseServerlessConfig from '../../serverless.base';
+import type { Serverless } from 'serverless/aws';
+<% if (bundler === 'esbuild') { %>
 import type { WatchOptions } from 'chokidar';
+<% } %>
+
+<% if (bundler === 'esbuild' || bundler === 'webpack') { %>
 import * as os from "node:os";
+<% } %>
 
 const serverlessConfiguration = <Serverless>{
   ...baseServerlessConfig,
@@ -14,8 +22,10 @@ const serverlessConfiguration = <Serverless>{
     /** @link https://www.npmjs.com/package/serverless-webpack */
     <% } else if (bundler === 'webpack') { %>
     'serverless-webpack',
-    /** @link https://www.npmjs.com/package/serverless-plugin-typescript */
     <% } else if (bundler === 'tsc') { %>
+    /** 
+     * @link https://www.npmjs.com/package/serverless-plugin-typescript 
+     */
     'serverless-plugin-typescript',
     <% } %>
     'serverless-offline',
@@ -24,12 +34,6 @@ const serverlessConfiguration = <Serverless>{
      * @link https://www.npmjs.com/package/serverless-plugin-common-excludes
      */
     'serverless-plugin-common-excludes',
-    <% if (bundler === 'tsc') { %>
-    /**
-     * @link https://www.npmjs.com/package/serverless-plugin-include-dependencies
-     */
-    'serverless-plugin-include-dependencies',
-    <% } %>
   ],
   package: {
     /**
@@ -50,6 +54,11 @@ const serverlessConfiguration = <Serverless>{
     include: [],
     exclude: [],
     <% } %>
+    /** 
+     * The AWS Lambda execution environment contains a number of libraries such as the AWS SDK for 
+     * the Node.js and Python runtimes (a full list can be found here: Lambda runtimes).
+     * @link https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html#function-code
+     */
     patterns: ['!.git/**', 'src/**', '!node_modules/@aws-sdk/**']
   },
   custom: {
@@ -151,4 +160,7 @@ const serverlessConfiguration = <Serverless>{
   },
 };
 
+// serverless.base.ts is not under the project, so tsc yells in editor,
+// But serverless framework under-the-hood uses ts-node that resolves serverless.ts with all its modules.
+// @ts-ignore
 export = serverlessConfiguration;

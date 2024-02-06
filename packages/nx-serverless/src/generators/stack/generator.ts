@@ -31,6 +31,7 @@ export async function serviceGenerator(
   };
   const projectRoot = `${resolvedOptions.appsDir}/${resolvedOptions.name}`;
 
+  const defaultStage = 'dev';
   addProjectConfiguration(tree, resolvedOptions.name, {
     root: projectRoot,
     projectType: 'application',
@@ -40,28 +41,35 @@ export async function serviceGenerator(
         executor: '@thyself/nx-serverless:package',
         options: {
           cwd: projectRoot,
-          stage: 'dev',
+          stage: defaultStage,
         },
       },
       start: {
         executor: '@thyself/nx-serverless:offline-start',
         options: {
           cwd: projectRoot,
-          stage: 'dev',
+          stage: defaultStage,
         },
       },
       deploy: {
         executor: '@thyself/nx-serverless:deploy',
         options: {
           cwd: projectRoot,
-          stage: 'dev',
+          stage: defaultStage,
+        },
+      },
+      print: {
+        executor: '@thyself/nx-serverless:print',
+        options: {
+          cwd: projectRoot,
+          stage: defaultStage,
         },
       },
       remove: {
         executor: '@thyself/nx-serverless:remove',
         options: {
           cwd: projectRoot,
-          stage: 'dev',
+          stage: defaultStage,
         },
       },
       lint: {

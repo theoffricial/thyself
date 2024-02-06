@@ -48,8 +48,8 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs nx-serverless {args.ver} {args.tag}",
-      "dependsOn": ["build"]
+      "command": "node tools/scripts/publish.mjs nx-serverless {args.ver} {args.tag} {args.otp}",
+      "dependsOn": ["build", "lint"]
     },
     "json2ts-executor": {
       "executor": "nx:run-commands",

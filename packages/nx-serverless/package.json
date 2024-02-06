@@ -1,6 +1,40 @@
 {
   "name": "@thyself/nx-serverless",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "keywords": ["thyself", "nx", "serverless", "nx-serverless"],
+  "homepage": "https://github.com/theoffricial/thyself/tree/main/packages/nx-serverless",
+  "repository": {
+    "url": "https://github.com/theoffricial/thyself",
+    "type": "git",
+    "directory": "packages/nx-serverless"
+  },
+  "author": {
+    "email": "theoffricial@gmail.com",
+    "name": "Ofri Peretz",
+    "url": "https://github.com/theoffricial"
+  },
+  "contributors": [
+    {
+      "email": "theoffricial@gmail.com",
+      "name": "Ofri Peretz",
+      "url": "https://github.com/theoffricial"
+    }
+  ],
+  "badges": [
+    {
+      "name": "npm",
+      "href": "https://www.npmjs.com/package/@thyself/nx-serverless",
+      "description": "npm version",
+      "url": "https://www.npmjs.com/package/@thyself/nx-serverless"
+    },
+    {
+      "name": "github",
+      "description": "GitHub repo",
+      "href": "https://github.com/theoffricial/thyself/tree/main/packages/nx-serverless",
+      "url": "https://github.com/theoffricial/thyself/tree/main/packages/nx-serverless"
+    }
+  ],
+  "private": false,
   "dependencies": {
     "@nx/devkit": "^17.2.8",
     "@nx/jest": "^17.2.8",

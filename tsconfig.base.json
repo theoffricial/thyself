@@ -17,9 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@thyself/clean-empty-values": ["packages/cev/src/index.ts"],
-      "@thyself/nx-serverless": ["packages/nx-serverless/src/index.ts"],
-      "@thyself/pp": ["packages/pp/src/index.ts"],
-      "@thyself/test": ["packages/test/src/index.ts"]
+      "@thyself/nx-serverless": ["packages/nx-serverless/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

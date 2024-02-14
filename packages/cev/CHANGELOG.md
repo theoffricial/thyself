@@ -1,3 +1,8 @@
+# 1.1.0
+
+- Update `LICENSE`
+- Add badges to `README.md`
+
 # 1.0.2
 
 * docs: update readme.md to install as `dependencies` instead of `devDependencies`.

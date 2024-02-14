@@ -13,6 +13,7 @@
         "tsConfig": "packages/nx-serverless/tsconfig.lib.json",
         "assets": [
           "packages/nx-serverless/*.md",
+          "packages/nx-serverless/LICENSE",
           {
             "input": "./packages/nx-serverless/src",
             "glob": "**/!(*.ts)",

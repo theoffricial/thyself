@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
+    "@nx/devkit": "18.0.4",
     "@nx/esbuild": "18.0.4",
     "@nx/eslint": "18.0.4",
     "@nx/eslint-plugin": "18.0.4",
@@ -64,7 +65,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@nx/devkit": "17.2.8",
     "@swc/helpers": "~0.5.2",
     "chalk": "^4.1.2",
     "prettyjson": "^1.2.5",

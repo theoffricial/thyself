@@ -1,6 +1,6 @@
 {
   "name": "@thyself/nx-serverless",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "keywords": ["thyself", "nx", "serverless", "nx-serverless"],
   "homepage": "https://github.com/theoffricial/thyself/tree/main/packages/nx-serverless",
   "repository": {
@@ -36,9 +36,6 @@
   ],
   "private": false,
   "dependencies": {
-    "@nx/devkit": "^17.2.8",
-    "@nx/jest": "^17.2.8",
-    "nx": "^17.2.7",
     "tslib": "^2.3.0",
     "util": "0.12.5",
     "prettyjson": "^1.2.5",
@@ -46,7 +43,10 @@
     "strip-ansi": "^6.0.1",
     "chalk": "^4.1.2",
     "date-fns": "^3.3.1",
-    "@thyself/clean-empty-values": "^1.0.2"
+    "@thyself/clean-empty-values": "^1.1.0",
+    "@nx/devkit": "^18.0.4",
+    "@nx/jest": "^18.0.4",
+    "nx": "^18.0.4"
   },
   "type": "commonjs",
   "main": "./src/index.js",
@@ -66,6 +66,9 @@
     }
   },
   "devDependencies": {
+    "@nx/devkit": "^18.0.4",
+    "@nx/jest": "^18.0.4",
+    "nx": "^18.0.4",
     "@types/serverless": "^3.12.20"
   }
 }

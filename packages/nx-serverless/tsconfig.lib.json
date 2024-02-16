@@ -6,6 +6,6 @@
     "types": ["node"],
     "esModuleInterop": true
   },
-  "include": ["src/**/*.ts", "src/generators/stack/bundler-files/esbuild/esbuild.config.ts.template", "src/generators/stack/serverless-base-file/serverless.base.ts.template"],
-  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+  "include": ["src/**/*.ts", "src/generators/stack/bundler-files/esbuild/esbuild.config.ts.template", "src/generators/stack/serverless-base-file/serverless.base.ts.template", "src/__mocks__/serverless/lib/configuration/read.ts"],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts", "**/__mocks__"]
 }

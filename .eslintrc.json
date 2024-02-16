@@ -29,7 +29,9 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        "object-curly-spacing": ["error", "always"]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

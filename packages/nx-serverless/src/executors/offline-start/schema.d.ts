@@ -1,4 +1,4 @@
-import type {BaseServerlessExecutorSchema} from '../../executors.shared-schema';
+import type { BaseServerlessExecutorSchema } from '../../executors.shared-schema';
 
 export interface OfflineStartExecutorSchema extends BaseServerlessExecutorSchema {
   /** ALB port to listen on. Default: 3003. */

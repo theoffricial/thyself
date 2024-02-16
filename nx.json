@@ -19,6 +19,12 @@
         "{workspaceRoot}/eslint.config.js"
       ]
     },
+    "test": {
+      "dependsOn": ["build"]
+    },
+    "e2e": {
+      "dependsOn": ["build"]
+    },
     "@nx/vite:test": {
       "cache": true,
       "inputs": ["default", "^production"]
@@ -59,5 +65,5 @@
     ],
     "sharedGlobals": []
   },
-  "nxCloudAccessToken": "NWYzYzEwMWQtMTJmZi00ZDFjLWI2ZGEtMTUxNmJiOTg2MjhjfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "MDQ1OGE5ZjUtZmI2Yy00N2E1LThhNWQtNDBiOWI5ZWYwNzkxfHJlYWQtd3JpdGU="
 }

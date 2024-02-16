@@ -3,3 +3,4 @@ jest.config.ts
 package-lock.json
 project.json
 tsconfig*
+src/**/*.js.map

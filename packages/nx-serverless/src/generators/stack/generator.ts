@@ -9,7 +9,6 @@ import {
   names,
   Tree,
   readJson,
-
 } from '@nx/devkit';
 import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
@@ -19,7 +18,7 @@ export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
 ) {
-  const {appsDir} = workspaceLayout();
+  const { appsDir } = workspaceLayout();
   const packageJson = await readJson(tree, 'package.json');
   const resolvedOptions: Required<ServiceGeneratorSchema> =  {
     description: options.description || '',

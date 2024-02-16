@@ -38,7 +38,7 @@ export function buildServerlessCommandArgs(serverlessArgs: string[], baseOptions
   }
 
   export function printServerlessCommandArgs(serverlessArgs: string[], baseOptions: BaseServerlessExecutorSchema) {
-    const prettyCommand = prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors']});
+    const prettyCommand = prettyjson.render(serverlessArgs.join(' '), { noColor: baseOptions['no-colors'] });
     const printMessage =
         '\nServerless command:\n' +
         '------------------------\n' +

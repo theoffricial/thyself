@@ -1,4 +1,4 @@
-import type {BaseServerlessExecutorSchema} from './executors.shared-schema';
+import type { BaseServerlessExecutorSchema } from './executors.shared-schema';
 import { Serverless } from 'serverless/aws';
 import path from 'path';
 import { ExecutorContext, workspaceRoot } from '@nx/devkit';

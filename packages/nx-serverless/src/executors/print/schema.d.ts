@@ -1,4 +1,4 @@
-import type {BaseServerlessExecutorSchema} from '../../executors.shared-schema';
+import type { BaseServerlessExecutorSchema } from '../../executors.shared-schema';
 
 export interface PrintExecutorSchema extends BaseServerlessExecutorSchema {
     /** Print configuration in given format ("yaml", "json", "text"). Default: yaml */

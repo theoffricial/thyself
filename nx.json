@@ -41,6 +41,11 @@
           "codeCoverage": true
         }
       }
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "tasksRunnerOptions": {
@@ -65,5 +70,13 @@
     ],
     "sharedGlobals": []
   },
-  "nxCloudAccessToken": "MDQ1OGE5ZjUtZmI2Yy00N2E1LThhNWQtNDBiOWI5ZWYwNzkxfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "MDQ1OGE5ZjUtZmI2Yy00N2E1LThhNWQtNDBiOWI5ZWYwNzkxfHJlYWQtd3JpdGU=",
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ]
 }

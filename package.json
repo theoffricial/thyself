@@ -22,6 +22,7 @@
     "@types/jest": "^29.4.0",
     "@types/node": "18.16.9",
     "@types/prettyjson": "^0.0.33",
+    "@types/semver": "^7.5.7",
     "@types/serverless": "^3.12.20",
     "@types/webpack": "^5.28.5",
     "@types/webpack-node-externals": "^3.0.4",

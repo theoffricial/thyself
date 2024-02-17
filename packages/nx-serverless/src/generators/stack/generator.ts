@@ -13,13 +13,19 @@ import {
 import * as path from 'path';
 import { ServiceGeneratorSchema } from './schema';
 import { addJest } from './jest-config';
-
+import { Linter, lintProjectGenerator } from '@nx/eslint';
+import semver from 'semver';
+import {
+  addOverrideToLintConfig,
+  updateOverrideInLintConfig,
+} from '@nx/eslint/src/generators/utils/eslint-file';
 export async function serviceGenerator(
   tree: Tree,
   options: ServiceGeneratorSchema
 ) {
   const { appsDir } = workspaceLayout();
   const packageJson = await readJson(tree, 'package.json');
+  
   const resolvedOptions: Required<ServiceGeneratorSchema> =  {
     description: options.description || '',
     appsDir,
@@ -29,6 +35,14 @@ export async function serviceGenerator(
     scope: options.scope || packageJson.name
   };
   const projectRoot = `${resolvedOptions.appsDir}/${resolvedOptions.name}`;
+  lintProjectGenerator(tree, {
+    project: options.name,
+    skipFormat: false,
+    addPlugin: true,
+    eslintFilePatterns: ["!**/*", "**/node_modules/**"],
+    linter: Linter.EsLint,
+    skipPackageJson: false,
+  });
 
   const defaultStage = 'dev';
   addProjectConfiguration(tree, resolvedOptions.name, {
@@ -108,23 +122,6 @@ export async function serviceGenerator(
     );
   }
 
-  // eslint workspace root generation
-  const eslint_extensions = ['json', 'js', 'cjs', 'mjs', 'ts', 'yml', 'yaml'];
-  const eslint_old_files = `${workspaceRoot}/.eslintrc`;
-  const eslint_flat_config = `${workspaceRoot}/eslint.config`;
-
-  if (!
-    (eslint_extensions.some(ext => tree.exists(`${eslint_old_files}.${ext}`)) || 
-    eslint_extensions.some(ext => tree.exists(`${eslint_flat_config}.${ext}`)))
-    ) {
-    generateFiles(
-      tree,
-      path.join(__dirname, 'eslint-root-level'), // path to the template files
-      '.', // destination directory
-      {}
-    );
-  }
-
   generateFiles(
     tree,
     path.join(__dirname, 'files'),
@@ -134,8 +131,59 @@ export async function serviceGenerator(
 
 
   await addJest(tree, resolvedOptions.name);
+  // Add the dependency check to the lint config
+  addOverrideToLintConfig(tree, `${appsDir}/${resolvedOptions.name}`, {
+    files: ['*.json'],
+    parser: 'jsonc-eslint-parser',
+    rules: {
+      '@nx/dependency-checks': 'error',
+    },
+  });
+
+  // updateOverrideInLintConfig(tree, '', (override) => {
+  //   const lookupExtensions = ['*.ts', '*.tsx', '*.js', '*.jsx'];
+  //   // Check if the desired override exists (optional)
+  //   return (Array.isArray(override.files) && override.files.every((file) => lookupExtensions.includes(file)));
+  // }, (override) => {
+
+  //   if (Array.isArray(override.rules['@nx/enforce-module-boundaries'])) {
+  //     override.rules['@nx/enforce-module-boundaries'][1].allow = Array.isArray(override.rules['@nx/enforce-module-boundaries'][1].allow) ? override.rules['@nx/enforce-module-boundaries'][1].allow : [];
+  //     override.rules['@nx/enforce-module-boundaries'][1].allow.push(
+  //       'serverless.base'
+  //     );
+  //   } else {
+  //     override.rules['@nx/enforce-module-boundaries'] = [
+  //       'error',
+  //       {
+  //         enforceBuildableLibDependency: true,
+  //         allow: ['serverless.base'], // Add "serverless.base"
+  //         depConstraints: [
+  //           {
+  //             sourceTag: '*',
+  //             onlyDependOnLibsWithTags: ['*'],
+  //           },
+  //         ],
+  //       },
+  //     ]
+  //   }
+  //   return override;
+  // });
+
+  //   files: ['*.json'],
+  // //   parser: 'jsonc-eslint-parser',
+  // //   rules: {
+  // //     '@nx/dependency-checks': 'error',
+  // //   },
+  // // }, {
+  // //   checkBaseConfig: false,
+  // // });
+
   await formatFiles(tree);
 
+  const coercedNxVersion = semver.coerce(packageJson.devDependencies.nx || packageJson.dependencies.nx);
+  const nxVersionDefault = 18;
+  const nxVersion = String(coercedNxVersion?.major || nxVersionDefault);
+  const nxPluginVersion = `^${nxVersion}.0.0`;
   const dependencies: Record<string, string> = {
     "serverless": "^3.38.0",
   };
@@ -146,6 +194,9 @@ export async function serviceGenerator(
     "typescript": "^5.3.3",
     "ts-node": "^10.9.2",
     "serverless-plugin-common-excludes": "^4.0.0",
+    '@nx/devkit': nxPluginVersion,
+    '@nx/eslint': nxPluginVersion,
+    '@nx/eslint-plugin': nxPluginVersion,
     ...(resolvedOptions.bundler === 'esbuild' && {
       'serverless-esbuild': '^1.50.1',
       'esbuild': '^0.8.41',
@@ -176,6 +227,7 @@ export async function serviceGenerator(
 
   addDependenciesToPackageJson(tree, dependencies, devDependencies);
 
+  
   return () => {
     installPackagesTask(tree, false, workspaceRoot, resolvedOptions.packageManager);
   };

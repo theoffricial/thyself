@@ -37,4 +37,6 @@ export interface BaseServerlessExecutorSchema extends Record<string, unknown> {
   verbose?: boolean;
   /** Namespace of debug logs to expose (use "*" to display all) */
   debug?: boolean;
+  /** Path to tsconfig file, used to parse serverless.ts */
+  'ts-node-project'?: string;
 }

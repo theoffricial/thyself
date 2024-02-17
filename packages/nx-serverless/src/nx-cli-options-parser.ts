@@ -33,6 +33,7 @@ export function resolvedOptionsFn<
     verbose: options.verbose || false,
     cwd: resolvedCwd,
     'serverless-file-ext': options['serverless-file-ext'] ?? 'ts',
+    'ts-node-project': options['ts-node-project'] || './tsconfig.json',
   };
 
   return _resolvedOptions;

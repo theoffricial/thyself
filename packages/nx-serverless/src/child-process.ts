@@ -3,13 +3,20 @@ import { logger } from "./logger";
 import { ExitCodeType, exitCodeMap } from "./child-process.constants";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function childProcessExecution(args: string[], absoluteDirectoryPath: string, options?: SpawnOptionsWithoutStdio & { noColors: boolean }) {
+export async function childProcessExecution(args: string[], absoluteDirectoryPath: string, options: SpawnOptionsWithoutStdio & { noColors: boolean, tsNodeProject: string }) {
     return new Promise<string>((resolve, reject) => {
 
         try {
             const [serverlessCli, ...restOfArgs] = args;
 
-            const childProcess = spawn(serverlessCli, restOfArgs, { cwd: absoluteDirectoryPath, stdio: ['pipe', 'pipe', 'pipe'] });
+            const childProcess = spawn(serverlessCli, restOfArgs, { 
+                env: {
+                    ...process.env,
+                    // Important because serverless CLI uses ts-node to run the serverless.ts file
+                    TS_NODE_PROJECT: options.tsNodeProject,
+                }, 
+              cwd: absoluteDirectoryPath, stdio: ['pipe', 'pipe', 'pipe'] 
+            });
 
             childProcess.stdout.on('data', (data) => {
                 const output = data.toString();

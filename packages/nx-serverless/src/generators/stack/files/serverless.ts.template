@@ -1,6 +1,3 @@
-// serverless.base.ts is not under the project, so tsc yells in editor,
-// But serverless framework under-the-hood uses ts-node that resolves serverless.ts with all its modules.
-// @ts-ignore
 import baseServerlessConfig from '../../serverless.base';
 import type { Serverless } from 'serverless/aws';
 <% if (bundler === 'esbuild') { %>
@@ -160,7 +157,4 @@ const serverlessConfiguration = <Serverless>{
   },
 };
 
-// serverless.base.ts is not under the project, so tsc yells in editor,
-// But serverless framework under-the-hood uses ts-node that resolves serverless.ts with all its modules.
-// @ts-ignore
 export = serverlessConfiguration;

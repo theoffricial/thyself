@@ -98,10 +98,28 @@ export async function serviceGenerator(
 
   const serverless_base_path = `${workspaceRoot}/serverless.base.ts`;
 
+  // serverless.base.ts generation
   if (!tree.exists(serverless_base_path)) {
     generateFiles(
       tree,
-      path.join(__dirname, 'serverless-base-file'), // path to the template files
+      path.join(__dirname, 'serverless-base-root-level'), // path to the template files
+      '.', // destination directory
+      {}
+    );
+  }
+
+  // eslint workspace root generation
+  const eslint_extensions = ['json', 'js', 'cjs', 'mjs', 'ts', 'yml', 'yaml'];
+  const eslint_old_files = `${workspaceRoot}/.eslintrc`;
+  const eslint_flat_config = `${workspaceRoot}/eslint.config`;
+
+  if (!
+    (eslint_extensions.some(ext => tree.exists(`${eslint_old_files}.${ext}`)) || 
+    eslint_extensions.some(ext => tree.exists(`${eslint_flat_config}.${ext}`)))
+    ) {
+    generateFiles(
+      tree,
+      path.join(__dirname, 'eslint-root-level'), // path to the template files
       '.', // destination directory
       {}
     );

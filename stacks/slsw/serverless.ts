@@ -1,5 +1,4 @@
 import type { Serverless } from 'serverless/aws';
-import {} from '@nx/devkit';
 import baseServerlessConfiguration from '../../serverless.base';
 
 type OriginalOrStringInterpolation<T> = {

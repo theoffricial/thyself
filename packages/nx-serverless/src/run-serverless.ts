@@ -53,7 +53,7 @@ export async function runServerless<ExecSchema extends BaseServerlessExecutorSch
 
     const customFlags: string[] = customFlagsBuilder ? customFlagsBuilder(resolvedOptions) : [];
     const commandArgs: string[] = buildServerlessCommandArgs(subCommandArgs, resolvedOptions, customFlags);
-    const spawnResult = await childProcessExecution(commandArgs, absoluteStackDir, { noColors: Boolean(resolvedOptions['no-colors']) });
+    const spawnResult = await childProcessExecution(commandArgs, absoluteStackDir, { noColors: Boolean(resolvedOptions['no-colors']), tsNodeProject: resolvedOptions['ts-node-project'] });
 
     return { success: !spawnResult.includes('error') };
 }

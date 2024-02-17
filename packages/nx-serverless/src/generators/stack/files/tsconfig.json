@@ -2,6 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "files": [],
   "include": [],
+  // Important because serverless uses ts-node to parse serverless.ts
+  // and it uses CommonJS module system, otherwise it will throw an error
+  // Can be customized with the "ts-node-project" option in the @thyself/nx-serverless executor
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    },
+  },
   "references": [
     {
       "path": "./tsconfig.app.json"

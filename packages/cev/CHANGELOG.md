@@ -1,3 +1,7 @@
+# 1.1.1
+
+- Fix `README.md` title.
+
 # 1.1.0
 
 - Update `LICENSE`

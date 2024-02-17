@@ -1,11 +1,13 @@
 # clean-empty-values, or "cev"
 
+Fast object empty values cleaner.
+
+
 ![NPM Downloads](https://img.shields.io/npm/dy/%40thyself%2Fclean-empty-values)
 ![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/npm/%40thyself%2Fclean-empty-values)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/%40thyself/clean-empty-values)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40thyself/clean-empty-values)
 
-Fast object empty values cleaner.
 
 ## Features
 

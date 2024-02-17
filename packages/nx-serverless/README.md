@@ -1,14 +1,12 @@
 # NX Serverless
 
+A full Serverless framework support, both executor & generator, for the NX environment.
+
+
 ![NPM Downloads](https://img.shields.io/npm/dy/%40thyself%2Fnx-serverless)
 ![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/npm/%40thyself%2Fnx-serverless)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/%40thyself/nx-serverless)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40thyself/nx-serverless)
-
-
-A full Serverless framework support, both executor & generator, for the NX environment.
-
-**_Currently in beta (major lower than 1.0.0)_**
 
 ## Features
 

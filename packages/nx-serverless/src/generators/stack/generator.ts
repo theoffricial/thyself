@@ -17,7 +17,7 @@ import { Linter, lintProjectGenerator } from '@nx/eslint';
 import semver from 'semver';
 import {
   addOverrideToLintConfig,
-  updateOverrideInLintConfig,
+  // updateOverrideInLintConfig,
 } from '@nx/eslint/src/generators/utils/eslint-file';
 export async function serviceGenerator(
   tree: Tree,

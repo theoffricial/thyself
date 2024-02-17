@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "keywords": ["thyself", "nx", "serverless", "nx-serverless"],
   "homepage": "https://github.com/theoffricial/thyself/tree/main/packages/nx-serverless",
+  "license": "MIT",
   "repository": {
     "url": "https://github.com/theoffricial/thyself",
     "type": "git",
@@ -46,7 +47,9 @@
     "@thyself/clean-empty-values": "^1.1.0",
     "@nx/devkit": "^18.0.4",
     "@nx/jest": "^18.0.4",
-    "nx": "^18.0.4"
+    "nx": "^18.0.4",
+    "@nx/eslint": "18.0.4",
+    "semver": "^7.5.4"
   },
   "type": "commonjs",
   "main": "./src/index.js",

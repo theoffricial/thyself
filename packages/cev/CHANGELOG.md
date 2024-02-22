@@ -1,3 +1,7 @@
+# 1.1.3
+
+- Edit README.md
+
 # 1.1.2
 
 - Fix add types

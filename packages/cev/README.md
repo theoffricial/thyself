@@ -1,4 +1,4 @@
-# clean-empty-values, or "cev-tmp"
+# clean-empty-values, or "cev"
 
 Fast object empty values cleaner.
 
@@ -34,6 +34,7 @@ usage examples presented as jest tests for convenience
 Simple usage
 
 ```ts
+import { cleanEmptyValues } from '@thyself/clean-empty-values';
 // value will be `{ y: null }`.
 const value = cleanEmptyValues({ x: '', y: null }, { emptyStrings: true });
 // value will be `{ x: '' }`.
@@ -48,13 +49,14 @@ const value = cleanEmptyValues({ x: '', y: { z: null, abc: '', zyx: undefined } 
 const value = cleanEmptyValues({ x: '', y: null }, { null: true, emptyStrings: true, replaceInPlace: true });
 ```
 
-See more examples by reviewing the [unit tests](https://github.com/theoffricial/thyself/blob/main/packages/cev-tmp/src/lib/clean-empty-values.spec.ts).
+See more examples by reviewing the [unit tests](https://github.com/theoffricial/thyself/blob/main/packages/cev/src/lib/clean-empty-values.spec.ts).
 
 ### Advanced TypeScript Support
 
 Provides maximum flexibility and strongly-typed code.
 
 ```ts
+import { cleanEmptyValues } from '@thyself/clean-empty-values';
 type MyType = { y: { z: null | number } };
 const myValue = cleanEmptyValues<MyType>({ x: '', y: { z: null, abc: '' } }, { emptyStrings: true });
 

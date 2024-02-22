@@ -10,6 +10,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
+            "allow": ["serverless.base"],
             "depConstraints": [
               {
                 "sourceTag": "*",
@@ -22,17 +23,13 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {
-        "object-curly-spacing": ["error", "always"]
-      }
+      "extends": ["plugin:@nx/typescript", "./dist/packages/eslint-plugin/src/lib/typescript"],
+      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {
-        "object-curly-spacing": ["error", "always"]
-      }
+      "extends": ["plugin:@nx/javascript", "./dist/packages/eslint-plugin/src/lib/javascript"],
+      "rules": {}
     }
   ]
 }

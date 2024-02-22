@@ -1,13 +1,15 @@
 {
-  "name": "@thyself/clean-empty-values",
-  "version": "1.1.0",
+  "name": "@thyself/cev",
+  "version": "1.1.2",
   "type": "commonjs",
-  "main": "./index.cjs",
-  "module": "./index.js",
-  "esnext": "./index.js",
+  "main": "./src/index.js",
   "private": false,
   "license": "MIT",
-  "keywords": ["thyself", "clean-empty-values", "clean-objects"],
+  "keywords": [
+    "thyself",
+    "clean-empty-values",
+    "clean-objects"
+  ],
   "homepage": "https://github.com/theoffricial/thyself/tree/main/packages/cev",
   "repository": {
     "url": "https://github.com/theoffricial/thyself",

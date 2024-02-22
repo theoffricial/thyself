@@ -1,3 +1,11 @@
+# 1.1.3
+
+- Fix file conflict.
+
+# 1.1.2
+
+- Fix add types
+
 # 1.1.1
 
 - Fix `README.md` title.
@@ -9,13 +17,13 @@
 
 # 1.0.2
 
-* docs: update readme.md to install as `dependencies` instead of `devDependencies`.
+- docs: update readme.md to install as `dependencies` instead of `devDependencies`.
 
 # 1.0.1
 
-* docs: fix readme.md examples
+- docs: fix readme.md examples
 
 # 1.0.0
 
-* Official release.
-* Small docs enhancements. 
+- Official release.
+- Small docs enhancements.

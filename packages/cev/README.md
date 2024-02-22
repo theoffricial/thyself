@@ -1,22 +1,20 @@
-# clean-empty-values, or "cev"
+# clean-empty-values, or "cev-tmp"
 
 Fast object empty values cleaner.
-
 
 ![NPM Downloads](https://img.shields.io/npm/dy/%40thyself%2Fclean-empty-values)
 ![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/npm/%40thyself%2Fclean-empty-values)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/%40thyself/clean-empty-values)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/%40thyself/clean-empty-values)
 
-
 ## Features
 
-* Dependency-free, super small and efficient package.
-* Supports the following clean-ups: `undefined`, `null`, `NaN`, `empty-strings`, `emptyObjects`, `emptyArrays`.
-* Supports a "clean in place" strategy that reduces memory consumption, with the `cleanInPlace` option.
-* Supports nested-objects clean-up.
-* Advanced TypeScript support for maximum flexibility on development time.
-* Both CommonJS and ESM support.
+- Dependency-free, super small and efficient package.
+- Supports the following clean-ups: `undefined`, `null`, `NaN`, `empty-strings`, `emptyObjects`, `emptyArrays`.
+- Supports a "clean in place" strategy that reduces memory consumption, with the `cleanInPlace` option.
+- Supports nested-objects clean-up.
+- Advanced TypeScript support for maximum flexibility on development time.
+- Both CommonJS and ESM support.
 
 ## Install
 
@@ -41,36 +39,31 @@ const value = cleanEmptyValues({ x: '', y: null }, { emptyStrings: true });
 // value will be `{ x: '' }`.
 const value = cleanEmptyValues({ x: '', y: null }, { null: true });
 // value will be `{}`.
-const value = cleanEmptyValues({ x: '', y: null }, { null: true, emptyStrings: true }); 
+const value = cleanEmptyValues({ x: '', y: null }, { null: true, emptyStrings: true });
 
 // value will be `{ y: { z: null, zyx: undefined } }`
-const value = cleanEmptyValues(
-          { x: '', y: { z: null, abc: '', zyx: undefined } },
-          { emptyStrings: true }
-        );
+const value = cleanEmptyValues({ x: '', y: { z: null, abc: '', zyx: undefined } }, { emptyStrings: true });
 
 // value will be `{}`. Using "replaceInPlace" which optimizes memory usage.
-const value = cleanEmptyValues({ x: '', y: null }, { null: true, emptyStrings: true, replaceInPlace: true }); 
+const value = cleanEmptyValues({ x: '', y: null }, { null: true, emptyStrings: true, replaceInPlace: true });
 ```
 
-See more examples by reviewing the [unit tests](https://github.com/theoffricial/thyself/blob/main/packages/cev/src/lib/clean-empty-values.spec.ts).
-
+See more examples by reviewing the [unit tests](https://github.com/theoffricial/thyself/blob/main/packages/cev-tmp/src/lib/clean-empty-values.spec.ts).
 
 ### Advanced TypeScript Support
+
 Provides maximum flexibility and strongly-typed code.
 
 ```ts
 type MyType = { y: { z: null | number } };
-const myValue = cleanEmptyValues<MyType>(
-    { x: '', y: { z: null, abc: '' } }, 
-    { emptyStrings: true });
+const myValue = cleanEmptyValues<MyType>({ x: '', y: { z: null, abc: '' } }, { emptyStrings: true });
 
-myValue.x // ❌ Type error, `"myValue.x` is NOT known "MyType".
-myValue.y.abc // ❌ Type error, `"myValue.y.abc` is NOT known by the "MyType"
-myValue.y // ✅ "myValue.y" is known by the Typescript compiler (tsc)
-myValue.y.z // ✅ "myValue.y.z" is known by the Typescript compiler (tsc)
-myValue.y.z = 7 // ✅ "myValue.z" can be assigned to number.
-myValue.y.z = "7" // ❌ Type error, "myValue.y.z" must be assigned to `null | number`
+myValue.x; // ❌ Type error, `"myValue.x` is NOT known "MyType".
+myValue.y.abc; // ❌ Type error, `"myValue.y.abc` is NOT known by the "MyType"
+myValue.y; // ✅ "myValue.y" is known by the Typescript compiler (tsc)
+myValue.y.z; // ✅ "myValue.y.z" is known by the Typescript compiler (tsc)
+myValue.y.z = 7; // ✅ "myValue.z" can be assigned to number.
+myValue.y.z = '7'; // ❌ Type error, "myValue.y.z" must be assigned to `null | number`
 ```
 
 ## "replaceInPlace" option

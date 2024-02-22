@@ -5,22 +5,21 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/cev",
         "main": "packages/cev/src/index.ts",
         "tsConfig": "packages/cev/tsconfig.lib.json",
         "assets": [
-          "packages/cev/*.md", 
+          "packages/cev/*.md",
           "packages/cev/LICENSE"
-        ],
-        "format": ["cjs", "esm"]
+        ]
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+    "publish": {
+      "command": "node tools/scripts/publish.mjs cev {args.ver} {args.tag} {args.otp}",
+      "dependsOn": ["build", "test", "lint"]
     },
     "test": {
       "executor": "@nx/jest:jest",
@@ -28,10 +27,6 @@
       "options": {
         "jestConfig": "packages/cev/jest.config.ts"
       }
-    },
-    "publish": {
-      "command": "node tools/scripts/publish.mjs cev {args.ver} {args.tag} {args.otp}",
-      "dependsOn": ["build", "test", "lint"]
     }
   },
   "tags": []

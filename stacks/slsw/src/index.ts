@@ -1,1 +1,1 @@
-const variable = 'my-service';
+export const variable = 'my-service';

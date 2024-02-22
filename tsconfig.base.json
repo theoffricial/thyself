@@ -16,7 +16,8 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@thyself/clean-empty-values": ["packages/cev/src/index.ts"],
+      "@thyself/cev": ["packages/cev/src/index.ts"],
+      "@thyself/eslint-plugin": ["packages/eslint-plugin/src/index.ts"],
       "@thyself/nx-serverless": ["packages/nx-serverless/src/index.ts"]
     }
   },

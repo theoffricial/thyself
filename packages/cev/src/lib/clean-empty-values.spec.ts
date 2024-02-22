@@ -2,9 +2,9 @@ import { cleanEmptyValues } from './clean-empty-values';
 
 describe('cleanEmptyValues', () => {
   it('should clean null values when "null" option is true', () => {
-    expect(cleanEmptyValues({ x: null, y: '' }, { null: true })).toEqual(
-      { y: '' }
-    );
+    expect(cleanEmptyValues({ x: null, y: '' }, { null: true })).toEqual({
+      y: '',
+    });
   });
 
   it('should clean NaN values when "nan" option is true', () => {
@@ -58,19 +58,13 @@ describe('cleanEmptyValues', () => {
   describe('cleanInPlace', () => {
     it('should clean null values when "null" option is true and clean in place is true', () => {
       expect(
-        cleanEmptyValues(
-          { x: null, y: '' },
-          { null: true, cleanInPlace: true }
-        )
+        cleanEmptyValues({ x: null, y: '' }, { null: true, cleanInPlace: true })
       ).toEqual({ y: '' });
     });
 
     it('should clean NaN values when "nan" option is true and clean in place is true', () => {
       expect(
-        cleanEmptyValues(
-          { x: NaN, y: '' },
-          { nan: true, cleanInPlace: true }
-        )
+        cleanEmptyValues({ x: NaN, y: '' }, { nan: true, cleanInPlace: true })
       ).toEqual({ y: '' });
     });
 
@@ -78,7 +72,7 @@ describe('cleanEmptyValues', () => {
       expect(
         cleanEmptyValues(
           { x: '', y: null },
-          { emptyStrings: true, cleanInPlace: true, }
+          { emptyStrings: true, cleanInPlace: true }
         )
       ).toEqual({ y: null });
     });

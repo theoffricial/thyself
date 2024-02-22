@@ -1,7 +1,3 @@
-# 1.1.3
-
-- Fix file conflict.
-
 # 1.1.2
 
 - Fix add types

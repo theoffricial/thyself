@@ -4,17 +4,34 @@
   "sourceRoot": "packages/cev/src",
   "projectType": "library",
   "targets": {
+    
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/cev",
         "main": "packages/cev/src/index.ts",
         "tsConfig": "packages/cev/tsconfig.lib.json",
+        "bundle": false,
+        "minify": false,
         "assets": [
-          "packages/cev/*.md",
-          "packages/cev/LICENSE"
-        ]
+          {
+            "glob": "*.md",
+            "input": "packages/cev",
+            "output": "."
+          },
+          {
+            "glob": "LICENSE",
+            "input": "packages/cev",
+            "output": "."
+          }
+        ],
+        "additionalEntryPoints": [],
+        "project": "packages/cev/package.json",
+        "skipTypeCheck": true,
+        "compiler": "tsc",
+        "format": ["cjs", "esm"],
+        "generateExportsField": true
       }
     },
     "publish": {

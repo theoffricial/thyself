@@ -1,3 +1,11 @@
+# 1.1.5
+
+- docs: ensure README.md presented in package artifact for readability.
+
+# 1.1.4
+
+- Migrate build to use rollup to support both esm and commonjs.
+
 # 1.1.3
 
 - Edit README.md
